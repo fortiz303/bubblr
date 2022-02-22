@@ -29,12 +29,12 @@ public partial class DataClassesDataContext : System.Data.Linq.DataContext
 	
   #region Extensibility Method Definitions
   partial void OnCreated();
-  partial void Insertpost(post instance);
-  partial void Updatepost(post instance);
-  partial void Deletepost(post instance);
   partial void Insertuser(user instance);
   partial void Updateuser(user instance);
   partial void Deleteuser(user instance);
+  partial void Insertpost(post instance);
+  partial void Updatepost(post instance);
+  partial void Deletepost(post instance);
   #endregion
 	
 	public DataClassesDataContext() : 
@@ -67,14 +67,6 @@ public partial class DataClassesDataContext : System.Data.Linq.DataContext
 		OnCreated();
 	}
 	
-	public System.Data.Linq.Table<post> posts
-	{
-		get
-		{
-			return this.GetTable<post>();
-		}
-	}
-	
 	public System.Data.Linq.Table<user> users
 	{
 		get
@@ -82,275 +74,12 @@ public partial class DataClassesDataContext : System.Data.Linq.DataContext
 			return this.GetTable<user>();
 		}
 	}
-}
-
-[global::System.Data.Linq.Mapping.TableAttribute(Name="test3.post")]
-public partial class post : INotifyPropertyChanging, INotifyPropertyChanged
-{
 	
-	private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-	
-	private int _Id;
-	
-	private string _Picture;
-	
-	private string _Title;
-	
-	private string _ShortDesc;
-	
-	private string _ContDesc;
-	
-	private System.Nullable<System.DateTime> _CreatedDate;
-	
-	private System.Nullable<int> _UserId;
-	
-	private System.Nullable<int> _Status;
-	
-	private EntityRef<user> _user;
-	
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdChanging(int value);
-    partial void OnIdChanged();
-    partial void OnPictureChanging(string value);
-    partial void OnPictureChanged();
-    partial void OnTitleChanging(string value);
-    partial void OnTitleChanged();
-    partial void OnShortDescChanging(string value);
-    partial void OnShortDescChanged();
-    partial void OnContDescChanging(string value);
-    partial void OnContDescChanged();
-    partial void OnCreatedDateChanging(System.Nullable<System.DateTime> value);
-    partial void OnCreatedDateChanged();
-    partial void OnUserIdChanging(System.Nullable<int> value);
-    partial void OnUserIdChanged();
-    partial void OnStatusChanging(System.Nullable<int> value);
-    partial void OnStatusChanged();
-    #endregion
-	
-	public post()
-	{
-		this._user = default(EntityRef<user>);
-		OnCreated();
-	}
-	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", DbType="Int NOT NULL", IsPrimaryKey=true)]
-	public int Id
+	public System.Data.Linq.Table<post> posts
 	{
 		get
 		{
-			return this._Id;
-		}
-		set
-		{
-			if ((this._Id != value))
-			{
-				this.OnIdChanging(value);
-				this.SendPropertyChanging();
-				this._Id = value;
-				this.SendPropertyChanged("Id");
-				this.OnIdChanged();
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Picture", DbType="NVarChar(50)")]
-	public string Picture
-	{
-		get
-		{
-			return this._Picture;
-		}
-		set
-		{
-			if ((this._Picture != value))
-			{
-				this.OnPictureChanging(value);
-				this.SendPropertyChanging();
-				this._Picture = value;
-				this.SendPropertyChanged("Picture");
-				this.OnPictureChanged();
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Title", DbType="NVarChar(50)")]
-	public string Title
-	{
-		get
-		{
-			return this._Title;
-		}
-		set
-		{
-			if ((this._Title != value))
-			{
-				this.OnTitleChanging(value);
-				this.SendPropertyChanging();
-				this._Title = value;
-				this.SendPropertyChanged("Title");
-				this.OnTitleChanged();
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ShortDesc", DbType="NVarChar(50)")]
-	public string ShortDesc
-	{
-		get
-		{
-			return this._ShortDesc;
-		}
-		set
-		{
-			if ((this._ShortDesc != value))
-			{
-				this.OnShortDescChanging(value);
-				this.SendPropertyChanging();
-				this._ShortDesc = value;
-				this.SendPropertyChanged("ShortDesc");
-				this.OnShortDescChanged();
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ContDesc", DbType="NVarChar(MAX)")]
-	public string ContDesc
-	{
-		get
-		{
-			return this._ContDesc;
-		}
-		set
-		{
-			if ((this._ContDesc != value))
-			{
-				this.OnContDescChanging(value);
-				this.SendPropertyChanging();
-				this._ContDesc = value;
-				this.SendPropertyChanged("ContDesc");
-				this.OnContDescChanged();
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedDate", DbType="DateTime")]
-	public System.Nullable<System.DateTime> CreatedDate
-	{
-		get
-		{
-			return this._CreatedDate;
-		}
-		set
-		{
-			if ((this._CreatedDate != value))
-			{
-				this.OnCreatedDateChanging(value);
-				this.SendPropertyChanging();
-				this._CreatedDate = value;
-				this.SendPropertyChanged("CreatedDate");
-				this.OnCreatedDateChanged();
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserId", DbType="Int")]
-	public System.Nullable<int> UserId
-	{
-		get
-		{
-			return this._UserId;
-		}
-		set
-		{
-			if ((this._UserId != value))
-			{
-				if (this._user.HasLoadedOrAssignedValue)
-				{
-					throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-				}
-				this.OnUserIdChanging(value);
-				this.SendPropertyChanging();
-				this._UserId = value;
-				this.SendPropertyChanged("UserId");
-				this.OnUserIdChanged();
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Status", DbType="Int")]
-	public System.Nullable<int> Status
-	{
-		get
-		{
-			return this._Status;
-		}
-		set
-		{
-			if ((this._Status != value))
-			{
-				this.OnStatusChanging(value);
-				this.SendPropertyChanging();
-				this._Status = value;
-				this.SendPropertyChanged("Status");
-				this.OnStatusChanged();
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.AssociationAttribute(Name="user_post", Storage="_user", ThisKey="UserId", OtherKey="Id", IsForeignKey=true)]
-	public user user
-	{
-		get
-		{
-			return this._user.Entity;
-		}
-		set
-		{
-			user previousValue = this._user.Entity;
-			if (((previousValue != value) 
-						|| (this._user.HasLoadedOrAssignedValue == false)))
-			{
-				this.SendPropertyChanging();
-				if ((previousValue != null))
-				{
-					this._user.Entity = null;
-					previousValue.posts.Remove(this);
-				}
-				this._user.Entity = value;
-				if ((value != null))
-				{
-					value.posts.Add(this);
-					this._UserId = value.Id;
-				}
-				else
-				{
-					this._UserId = default(Nullable<int>);
-				}
-				this.SendPropertyChanged("user");
-			}
-		}
-	}
-	
-	public event PropertyChangingEventHandler PropertyChanging;
-	
-	public event PropertyChangedEventHandler PropertyChanged;
-	
-	protected virtual void SendPropertyChanging()
-	{
-		if ((this.PropertyChanging != null))
-		{
-			this.PropertyChanging(this, emptyChangingEventArgs);
-		}
-	}
-	
-	protected virtual void SendPropertyChanged(String propertyName)
-	{
-		if ((this.PropertyChanged != null))
-		{
-			this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			return this.GetTable<post>();
 		}
 	}
 }
@@ -610,6 +339,277 @@ public partial class user : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		this.SendPropertyChanging();
 		entity.user = null;
+	}
+}
+
+[global::System.Data.Linq.Mapping.TableAttribute(Name="test3.post")]
+public partial class post : INotifyPropertyChanging, INotifyPropertyChanged
+{
+	
+	private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+	
+	private int _Id;
+	
+	private string _Picture;
+	
+	private string _Title;
+	
+	private string _ShortDesc;
+	
+	private string _ContDesc;
+	
+	private System.Nullable<System.DateTime> _CreatedDate;
+	
+	private System.Nullable<int> _UserId;
+	
+	private System.Nullable<int> _Status;
+	
+	private EntityRef<user> _user;
+	
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnPictureChanging(string value);
+    partial void OnPictureChanged();
+    partial void OnTitleChanging(string value);
+    partial void OnTitleChanged();
+    partial void OnShortDescChanging(string value);
+    partial void OnShortDescChanged();
+    partial void OnContDescChanging(string value);
+    partial void OnContDescChanged();
+    partial void OnCreatedDateChanging(System.Nullable<System.DateTime> value);
+    partial void OnCreatedDateChanged();
+    partial void OnUserIdChanging(System.Nullable<int> value);
+    partial void OnUserIdChanged();
+    partial void OnStatusChanging(System.Nullable<int> value);
+    partial void OnStatusChanged();
+    #endregion
+	
+	public post()
+	{
+		this._user = default(EntityRef<user>);
+		OnCreated();
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+	public int Id
+	{
+		get
+		{
+			return this._Id;
+		}
+		set
+		{
+			if ((this._Id != value))
+			{
+				this.OnIdChanging(value);
+				this.SendPropertyChanging();
+				this._Id = value;
+				this.SendPropertyChanged("Id");
+				this.OnIdChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Picture", DbType="NVarChar(50)")]
+	public string Picture
+	{
+		get
+		{
+			return this._Picture;
+		}
+		set
+		{
+			if ((this._Picture != value))
+			{
+				this.OnPictureChanging(value);
+				this.SendPropertyChanging();
+				this._Picture = value;
+				this.SendPropertyChanged("Picture");
+				this.OnPictureChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Title", DbType="NVarChar(120)")]
+	public string Title
+	{
+		get
+		{
+			return this._Title;
+		}
+		set
+		{
+			if ((this._Title != value))
+			{
+				this.OnTitleChanging(value);
+				this.SendPropertyChanging();
+				this._Title = value;
+				this.SendPropertyChanged("Title");
+				this.OnTitleChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ShortDesc", DbType="NVarChar(500)")]
+	public string ShortDesc
+	{
+		get
+		{
+			return this._ShortDesc;
+		}
+		set
+		{
+			if ((this._ShortDesc != value))
+			{
+				this.OnShortDescChanging(value);
+				this.SendPropertyChanging();
+				this._ShortDesc = value;
+				this.SendPropertyChanged("ShortDesc");
+				this.OnShortDescChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ContDesc", DbType="NVarChar(MAX)")]
+	public string ContDesc
+	{
+		get
+		{
+			return this._ContDesc;
+		}
+		set
+		{
+			if ((this._ContDesc != value))
+			{
+				this.OnContDescChanging(value);
+				this.SendPropertyChanging();
+				this._ContDesc = value;
+				this.SendPropertyChanged("ContDesc");
+				this.OnContDescChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedDate", DbType="DateTime")]
+	public System.Nullable<System.DateTime> CreatedDate
+	{
+		get
+		{
+			return this._CreatedDate;
+		}
+		set
+		{
+			if ((this._CreatedDate != value))
+			{
+				this.OnCreatedDateChanging(value);
+				this.SendPropertyChanging();
+				this._CreatedDate = value;
+				this.SendPropertyChanged("CreatedDate");
+				this.OnCreatedDateChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserId", DbType="Int")]
+	public System.Nullable<int> UserId
+	{
+		get
+		{
+			return this._UserId;
+		}
+		set
+		{
+			if ((this._UserId != value))
+			{
+				if (this._user.HasLoadedOrAssignedValue)
+				{
+					throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+				}
+				this.OnUserIdChanging(value);
+				this.SendPropertyChanging();
+				this._UserId = value;
+				this.SendPropertyChanged("UserId");
+				this.OnUserIdChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Status", DbType="Int")]
+	public System.Nullable<int> Status
+	{
+		get
+		{
+			return this._Status;
+		}
+		set
+		{
+			if ((this._Status != value))
+			{
+				this.OnStatusChanging(value);
+				this.SendPropertyChanging();
+				this._Status = value;
+				this.SendPropertyChanged("Status");
+				this.OnStatusChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.AssociationAttribute(Name="user_post", Storage="_user", ThisKey="UserId", OtherKey="Id", IsForeignKey=true)]
+	public user user
+	{
+		get
+		{
+			return this._user.Entity;
+		}
+		set
+		{
+			user previousValue = this._user.Entity;
+			if (((previousValue != value) 
+						|| (this._user.HasLoadedOrAssignedValue == false)))
+			{
+				this.SendPropertyChanging();
+				if ((previousValue != null))
+				{
+					this._user.Entity = null;
+					previousValue.posts.Remove(this);
+				}
+				this._user.Entity = value;
+				if ((value != null))
+				{
+					value.posts.Add(this);
+					this._UserId = value.Id;
+				}
+				else
+				{
+					this._UserId = default(Nullable<int>);
+				}
+				this.SendPropertyChanged("user");
+			}
+		}
+	}
+	
+	public event PropertyChangingEventHandler PropertyChanging;
+	
+	public event PropertyChangedEventHandler PropertyChanged;
+	
+	protected virtual void SendPropertyChanging()
+	{
+		if ((this.PropertyChanging != null))
+		{
+			this.PropertyChanging(this, emptyChangingEventArgs);
+		}
+	}
+	
+	protected virtual void SendPropertyChanged(String propertyName)
+	{
+		if ((this.PropertyChanged != null))
+		{
+			this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+		}
 	}
 }
 #pragma warning restore 1591

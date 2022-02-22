@@ -9,7 +9,7 @@ public partial class api_user_register : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        Response.AppendHeader("Access-Control-Allow-Origin","*");
+        Response.AppendHeader("Access-Control-Allow-Origin", "*");
 
         try
         {
@@ -18,22 +18,26 @@ public partial class api_user_register : System.Web.UI.Page
             string year = Request["year"];
             string city = Request["city"];
             string pass = Request["pass"];
-        
+
             UserManager UM = new UserManager();
             if (UM.CheckUser(email) == null)
             {
                 user u = new user();
                 u.Email = email;
                 u.City = city;
-                u.Password = UTIL.Encrypt(pass,true);
+                u.Password = UTIL.Encrypt(pass, true);
                 u.BirthYear = Convert.ToInt32(year);
                 u.Name = name;
                 u.Status = 1;
                 u.CreatedDate = DateTime.UtcNow;
-
-
                 UM.AddUser(u);
-                Response.Write(1);
+
+                user ulogin = UM.Login(email, UTIL.Encrypt(pass, true));
+
+                if (ulogin != null)
+                {
+                    Response.Write(UTIL.Encrypt(email + "@@" + pass, true));
+                }
             }
             else
             {

@@ -10,63 +10,63 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <style>
         body {
-            background:rgb(237, 247, 249);
-        }
-        .page{
-            padding-left:10px;
-            padding-right:10px;
-        }
-        .logo-header
-        {
-            text-align:center;
-            font-weight:bold;
-            font-size:25pt;
-            color:brown;
-        }
-        .text-desc
-        {
-            text-align:center;
-            font-size:14pt;
-            font-weight:bold;
-        }
-        .btn
-        {
-            font-weight:bold;
+            background: rgb(237, 247, 249);
         }
 
-        .post-block
-        {
-            margin:5px 5px 10px 5px;
-            cursor:pointer;
+        .page {
+            padding-left: 10px;
+            padding-right: 10px;
         }
-        .post-img
-        {
-            float:left;
-            width:30%;
-            border:0px;
+
+        .logo-header {
+            text-align: center;
+            font-weight: bold;
+            font-size: 25pt;
+            color: brown;
         }
-        .post-desc
-        {
-            float:left;
-            width:70%;
+
+        .text-desc {
+            text-align: center;
+            font-size: 14pt;
+            font-weight: bold;
         }
-        .post-clear
-        {
-            clear:both;
+
+        .btn {
+            font-weight: bold;
         }
-        .img-avt-circle
-        {
-         
-            border:1px solid black;
-            max-width:130px;
-            width:90%;
+
+        .post-block {
+            margin: 5px 5px 10px 5px;
+            cursor: pointer;
         }
-        .post-title
-        {
-            font-weight:bold;
+
+        .post-img {
+            float: left;
+            width: 30%;
+            border: 0px;
         }
-        .post-short-desc{
-            text-align:justify;
+
+        .post-desc {
+            float: left;
+            width: 70%;
+        }
+
+        .post-clear {
+            clear: both;
+        }
+
+        .img-avt-circle {
+            border: 1px solid black;
+            max-width: 130px;
+            width: 90%;
+        }
+
+        .post-title {
+            font-weight: bold;
+        }
+
+        .post-short-desc {
+            text-align: justify;
         }
 
         #menu {
@@ -81,12 +81,13 @@
             padding: 0px;
             /*padding-bottom: 15px;*/
             z-index: 2;
-            border-top:2px solid darkgray;
+            border-top: 2px solid darkgray;
         }
+
         .menu-item {
             padding-top: 5px;
             padding-bottom: 5px;
-            color:darkgray;
+            color: darkgray;
             padding-top: 5px;
         }
 
@@ -94,49 +95,110 @@
             font-size: 9px;
             color: black;
         }
+
         .menu-active {
             border-bottom: 2px solid #678df6;
             padding-bottom: 3px;
             color: #678df6 !important;
         }
+
         .ic-back {
             font-size: 18px;
             margin: 10px;
             color: cadetblue;
-            cursor:pointer;
+            cursor: pointer;
         }
-        .btn-back
-        {
-            margin-right:10px;
+
+        .btn-back {
+            margin-right: 10px;
         }
         /*block details*/
         #post-details-content-block {
-            padding:20px;
-            text-align:center;
+            padding: 20px;
+            text-align: center;
         }
+
         #post-details-img {
         }
+
         #post-details-user {
-            margin:10px;
+            margin: 10px;
             font-weight: bold;
             color: cadetblue;
         }
-        #post-details-title{
-            font-size:20px;
-            font-weight:bold;
-            text-align:left;
+
+        #post-details-title {
+            font-size: 20px;
+            font-weight: bold;
+            text-align: left;
         }
+
         #post-details-desc {
             text-align: left;
         }
-        
+
+        .validation {
+            color: red;
+            margin-bottom: -18px !important;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+
+        /* create post*/
+        .wrap-list-image-trip {
+            width: 100%;
+            overflow: auto;
+            padding: 10px;
+        }
+        /*up img in crate post*/
+        .fileUpload {
+            position: relative;
+            width: fit-content;
+        }
+
+            .fileUpload .upload {
+                position: absolute;
+                top: 0;
+                left: 0;
+                margin: 0;
+                padding: 0;
+                width: 100%;
+                height: 100%;
+                cursor: pointer;
+                opacity: 0;
+            }
+
+
+        .list-image-trip {
+            height: 120px;
+            width: 4000px;
+        }
+
+        .ui-sortable-handle.ui-sortable-placeholder {
+            /*display:none;*/
+            float: left;
+        }
+
+        .th-short-desc {
+            width: 40%;
+        }
+
+        .td-short-desc {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            line-height: 16px !important; /* fallback */
+            max-height: 45px; /* fallback */
+            -webkit-line-clamp: 2; /* number of lines to show */
+            -webkit-box-orient: vertical;
+        }
     </style>
     <script>
         BASE_API = "/api/";
         function Register() {
 
-            $("#btnRegister").attr("disabled","disabled");
-
+            $("#btnRegister").attr("disabled", "disabled");
+            $(".validation").remove();
             var name = $("#txtName").val();
             var city = $("#slCity").val();
             var year = $("#slYear").val();
@@ -147,25 +209,45 @@
             //validate
             if (name == '') {
                 err += '-Please enter your name\n';
+                $("#txtName").parent().after("<div class='validation' style='color:red;margin-bottom: 5px;'>Please enter your name</div>")
+            }
+            if (name.length == 1) {
+                $("#txtName").parent().after("<div class='validation' style='color:red;margin-bottom: 5px;'>Your name is too short </div>")
             }
             if (city == 0) {
                 err += '-Please select your city\n';
+                $("#slCity").parent().after("<div class='validation' style='color:red;margin-bottom: 5px;'>Please select your city</div>")
             }
             if (year == 0) {
                 err += '-Please select your birth year\n';
+                $("#slYear").parent().after("<div class='validation' style='color:red;margin-bottom: 5px;'>Please select your birth year</div>")
+
             }
             if (email == '') {
                 err += '-Please enter your email\n';
+                $("#txtEmail").parent().after("<div class='validation' style='color:red;margin-bottom: 5px;'>Please enter email address</div>")
             }
+            if (email.length >= 1) {
+                var email2 = document.getElementById('txtEmail');
+                var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+
+                if (!filter.test(email2.value)) {
+                    err += '-Please enter your email\n';
+                    $("#txtEmail").parent().after("<div class='validation' style='color:red;margin-bottom: 5px;'>Please provide a valid email address</div>")
+                }
+            }
+
             if (pass == '') {
                 err += '-Please enter your pass\n';
+                $("#txtPass").parent().after("<div class='validation' style='color:red;margin-bottom: 5px;'>Please enter your password</div>")
             }
 
             if (err != '') {
-                alert(err);
+                /*alert(err);*/
                 $("#btnRegister").removeAttr("disabled");
             }
             else {
+
                 // send register
                 $.post(BASE_API + "user/register.aspx", {
                     name: name,
@@ -175,23 +257,40 @@
                     pass: pass
                 }, function (data) {
                     $("#btnRegister").removeAttr("disabled");
-                    if (data == 1) {
-                        // clear form
-                        $("#txtName").val('');
-                        $('#txtEmail').val('');
-                        $('#txtPass').val('');
-                        $('#slCity').val('0');
-                        $('#slYear').val('0');
-                        alert("Your account has been created. Please login to chat.");
-                        GoTo('page-login');
-                    }
-                    else if (data == 2) {
+                    //if (data == 1) {
+                    //    // clear form
+                    //    $("#txtName").val('');
+                    //    $('#txtEmail').val('');
+                    //    $('#txtPass').val('');
+                    //    $('#slCity').val('0');
+                    //    $('#slYear').val('0');
+                    //    alert("Your account has been created. Please login to chat.");
+                    //    /*GoTo('page-login');*/
+                    //    localStorage.token = data;
+                    //    GoTo('page-post');
+                    //    $("#menu").show();
+                    //}
+                    if (data == 2) {
                         alert("Please try a different email.");
                     }
-                    else if (data == 0) {
+                    if (data == 0) {
                         alert("Something's wrong, please try again!");
                     }
-                    
+                    else {
+                        // clear form
+                        //$("#txtName").val('');
+                        //$('#txtEmail').val('');
+                        //$('#txtPass').val('');
+                        //$('#slCity').val('0');
+                        //$('#slYear').val('0');
+                        //alert("Your account has been created. Please login to chat.");
+                        /*GoTo('page-login');*/
+                        localStorage.token = data;
+                        /*alert("OK!");*/
+                        GoTo('page-post');
+                        $("#menu").show();
+                    }
+
                 });
             }
         }
@@ -203,7 +302,8 @@
             if (email == '') {
                 err += '-Please enter your email\n';
             }
-            if(pass=='') {
+
+            if (pass == '') {
                 err += '-Please enter your password\n';
             }
             if (err != '') {
@@ -213,7 +313,7 @@
                 //check login
                 $.post(BASE_API + "user/login.aspx", {
                     email: email,
-                    pass:pass
+                    pass: pass
                 }, function (data) {
                     if (data == 0) {
                         alert('Wrong username/password please try again.');
@@ -236,7 +336,7 @@
                 ViewPostList();
             }
 
-            $("#"+id).show();
+            $("#" + id).show();
         }
 
         function ChangeTab(id) {
@@ -254,13 +354,13 @@
                 $("#page-account").show();
         }
 
-        
+
 
         function ViewPostList() {
             $.ajax({
                 dataType: "json",
-                url: BASE_API+'post/get-top-post.aspx',
-                
+                url: BASE_API + 'post/get-top-post.aspx',
+
                 success: function (data2) {
                     //console.log(data2);
                     pr_list = '';
@@ -270,7 +370,7 @@
                         pr_list += '<div class="post-img"><img src="/img/' + val.img + '" class="img-avt-circle rounded-circle" /></div>';
                         pr_list += '<div class="post-desc">';
                         pr_list += '<div class="post-title">' + val.title + '</div>';
-                        pr_list += '<div class="post-short-desc">'+val.short_desc+'</div>';
+                        pr_list += '<div class="post-short-desc">' + val.short_desc + '</div>';
                         pr_list += '</div>';
                         pr_list += '<div class="post-clear"></div>';
                         pr_list += '</div>';
@@ -300,14 +400,14 @@
                 dataType: "json",
                 url: BASE_API + 'post/get-top-content.aspx?post_id=' + post_id,
                 success: function (data) {
-                    
+
                     $.each(data, function (key, val) {
 
-                        $("#post-details-img img").attr('src', "/img/"+val.img);
+                        $("#post-details-img img").attr('src', "/img/" + val.img);
                         $("#post-details-user").html('<i class="fas fa-user" style="margin-right:10px"></i>' + val.user_name);
                         $("#post-details-title").html(val.title);
                         $("#post-details-desc").html(val.post_content);
-                        
+
                         GoTo('page-post-details');
 
 
@@ -315,14 +415,14 @@
 
                 }
             });
-                       
+
         }
 
 
         function GenerateYear() {
             s_y = '<option value="0">Your birth year</option>';
             for (i = 1970; i < 2007; i++) {
-                s_y += '<option value="'+i+'">'+i+'</option>';
+                s_y += '<option value="' + i + '">' + i + '</option>';
             }
             $("#slYear").html(s_y);
         }
@@ -332,7 +432,7 @@
             GoTo('page-login');
         }
 
-        
+
 
         $(function () {
             GenerateYear();
@@ -344,6 +444,83 @@
                 $("#menu").hide();
             }
         });
+
+        /* create post */
+        var base64 = "";
+        function Preview(event) {
+            var input = event.target;
+            if (input.files) {
+                var reader = new FileReader();
+                reader.fileName = input.files[0].name;
+                reader.onload = function (e) {
+                    base64 = e.target.result.replace(/^data:image\/[a-z]+;base64,/, "");
+                    $("#preview").attr("src", e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        };
+
+
+        function CreatePost() {
+            var token = localStorage.token();
+            var fields = token.split('@@');
+            var checkEmail = fields[0];
+            var checkPass = fields[1];
+            $("#btnSave").attr("disabled", "disabled");
+            $(".validation").remove();
+            var title = $("#txtTitle").val();
+            var shortdes = $("#txtShortDes").val();
+            var contdes = $("#txtContDes").val();
+            alert(checkEmail);
+            if (title == '') {
+                alert("Please enter title.")
+                /* err += 'Please enter title.';*/
+                $("#txtTitle").parent().after("<div class='validation' style='color:red;margin-bottom: 5px;'>Please enter title</div>")
+
+                $("#btnSave").removeAttr("disabled");
+            }
+            if (shortdes == '') {
+                alert("Please enter short description.")
+            }
+            if (contdes == '') {
+                alert("Please enter content description.")
+            }
+            //if (err != '') {
+            //    $("#btnSave").removeAttr("disabled");
+            //}
+            else {
+
+                $.post(BASE_API + "post/create-post.aspx", {
+                    base64: base64,
+                    title: title,
+                    shortdes: shortdes,
+                    contdes: contdes,
+                    checkEmail: checkEmail,
+                    checkPass: checkPass
+
+                }, function (data) {
+                    if (data == 1) {
+                        $("#txtTitle").val('');
+                        $("#txtShortDes").val('');
+                        $("#txtContDes").val('');
+                        base64 = "";
+                        $("#btnSave").removeAttr("disabled");
+                        alert("Create Post Success.")
+                        GoTo('page-post');
+                        $("#menu").show();
+                    }
+                    else {
+                        alert("Please try again.")
+                        $("#btnSave").removeAttr("disabled");
+                    }
+
+                });
+
+            }
+
+
+        }
+
     </script>
 </head>
 <body>
@@ -377,7 +554,7 @@
             <div>
                 <label></label>
                 <select class="form-select" id="slCity">
-                    <option value="0">Your Municipality</option>
+                    <option value="0">Your City</option>
                     <option value="1">Drago</option>
                     <option value="2">Daxe</option>
                 </select>
@@ -495,9 +672,57 @@
         <div class="ic-back">Page Messages</div>
     </div>
     <!--./ Page Messages ---->
-    <!---- Page Account ---->
+    <!---- Page create-post ---->
     <div class="page" id="page-create-post" style="display:none">
         <div class="ic-back">Page Create Post</div>
+        <!-- Content area -->
+        <section class="content table-data">
+
+            <!-- /table -->
+        </section>
+        <!-- ./ content-->
+        <section class="content modal-form">
+            <form class="form-horizontal" id="formData">
+                <!--<div class="form-group">
+                    <button type="button" class="btnBack btn btn-primary pull-left">BACK</button>
+                </div>-->
+                <div class="form-group">
+                    <label class="col-md-2 col-sm-2 text-right">Title</label>
+                    <div class="col-md-10 col-sm-10">
+                        <input type="text" class="form-control validate" id="txtTitle" placeholder="Enter title..." />
+                    </div>
+                </div>
+                <br />
+                <div class="form-group">
+                    <label class="col-md-2 col-sm-2 text-right">Short Description</label>
+                    <div class="col-md-10 col-sm-10">
+                        <textarea class="form-control validate" rows="3" id="txtShortDes" data-message-val="Enter short description..." placeholder="Enter short descrtiption..."></textarea>
+                    </div>
+                </div>
+                <br />
+                <div class="form-group">
+                    <label class="col-md-2 col-sm-2 text-right">Content Description</label>
+                    <div class="col-md-10 col-sm-10">
+                        <textarea class="form-control validate" rows="3" id="txtContDes" data-message-val="Enter content description..." placeholder="Enter content description..."></textarea>
+                    </div>
+                </div>
+                <br />
+                <div class="form-group">
+                    <label>Picture</label>
+                    <img src="" id="preview" width="10%" /><br />
+                    <div class="fileUpload btn btn-info btn-upload">
+                        <span>+ Add Picture</span>
+                        <input type="file" onchange="Preview(event,this)" accept="image/*" class="upload" />
+                    </div>
+                </div>
+                <br />
+                <div class="form-group">
+                    <button id="btnSave" type="submit" class="btn btn-success pull-right" onclick="CreatePost()">SAVE</button>
+                    <button type="button" class="btnBack btn btn-primary pull-left">BACK</button>
+                </div>
+            </form>
+        </section>
+
     </div>
     <!--./ Page Account ---->
     <!---- Page Account ---->

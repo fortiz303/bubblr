@@ -37,4 +37,8 @@ public class UserManager
     {
 		db.SubmitChanges();
     }
+	public user CheckToken(string e, string p)
+    {
+		return db.users.Where(u => u.Email == e && u.Password == p && u.Status == 1).FirstOrDefault();
+    }
 }

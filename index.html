@@ -1,0 +1,523 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <title>BUBBLR</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <style>
+        body {
+            background:rgb(237, 247, 249);
+        }
+        .page{
+            padding-left:10px;
+            padding-right:10px;
+        }
+        .logo-header
+        {
+            text-align:center;
+            font-weight:bold;
+            font-size:25pt;
+            color:brown;
+        }
+        .text-desc
+        {
+            text-align:center;
+            font-size:14pt;
+            font-weight:bold;
+        }
+        .btn
+        {
+            font-weight:bold;
+        }
+
+        .post-block
+        {
+            margin:5px 5px 10px 5px;
+            cursor:pointer;
+        }
+        .post-img
+        {
+            float:left;
+            width:30%;
+            border:0px;
+        }
+        .post-desc
+        {
+            float:left;
+            width:70%;
+        }
+        .post-clear
+        {
+            clear:both;
+        }
+        .img-avt-circle
+        {
+         
+            border:1px solid black;
+            max-width:130px;
+            width:90%;
+        }
+        .post-title
+        {
+            font-weight:bold;
+        }
+        .post-short-desc{
+            text-align:justify;
+        }
+
+        #menu {
+            text-align: center;
+            background-color: azure;
+            color: white;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            margin: 0px;
+            padding: 0px;
+            /*padding-bottom: 15px;*/
+            z-index: 2;
+            border-top:2px solid darkgray;
+        }
+        .menu-item {
+            padding-top: 5px;
+            padding-bottom: 5px;
+            color:darkgray;
+            padding-top: 5px;
+        }
+
+        .icon-menu-desc {
+            font-size: 9px;
+            color: black;
+        }
+        .menu-active {
+            border-bottom: 2px solid #678df6;
+            padding-bottom: 3px;
+            color: #678df6 !important;
+        }
+        .ic-back {
+            font-size: 18px;
+            margin: 10px;
+            color: cadetblue;
+            cursor:pointer;
+        }
+        .btn-back
+        {
+            margin-right:10px;
+        }
+        /*block details*/
+        #post-details-content-block {
+            padding:20px;
+            text-align:center;
+        }
+        #post-details-img {
+        }
+        #post-details-user {
+            margin:10px;
+            font-weight: bold;
+            color: cadetblue;
+        }
+        #post-details-title{
+            font-size:20px;
+            font-weight:bold;
+            text-align:left;
+        }
+        #post-details-desc {
+            text-align: left;
+        }
+        
+    </style>
+    <script>
+        BASE_API = "/api/";
+        function Register() {
+
+            $("#btnRegister").attr("disabled","disabled");
+
+            var name = $("#txtName").val();
+            var city = $("#slCity").val();
+            var year = $("#slYear").val();
+            var email = $("#txtEmail").val();
+            var pass = $("#txtPass").val();
+            var err = '';
+
+            //validate
+            if (name == '') {
+                err += '-Please enter your name\n';
+            }
+            if (city == 0) {
+                err += '-Please select your city\n';
+            }
+            if (year == 0) {
+                err += '-Please select your birth year\n';
+            }
+            if (email == '') {
+                err += '-Please enter your email\n';
+            }
+            if (pass == '') {
+                err += '-Please enter your pass\n';
+            }
+
+            if (err != '') {
+                alert(err);
+                $("#btnRegister").removeAttr("disabled");
+            }
+            else {
+                // send register
+                $.post(BASE_API + "user/register.aspx", {
+                    name: name,
+                    city: city,
+                    year: year,
+                    email: email,
+                    pass: pass
+                }, function (data) {
+                    $("#btnRegister").removeAttr("disabled");
+                    if (data == 1) {
+                        // clear form
+                        $("#txtName").val('');
+                        $('#txtEmail').val('');
+                        $('#txtPass').val('');
+                        $('#slCity').val('0');
+                        $('#slYear').val('0');
+                        alert("Your account has been created. Please login to chat.");
+                        GoTo('page-login');
+                    }
+                    else if (data == 2) {
+                        alert("Please try a different email.");
+                    }
+                    else if (data == 0) {
+                        alert("Something's wrong, please try again!");
+                    }
+                    
+                });
+            }
+        }
+
+        function Login() {
+            email = $("#txtEmailLogin").val();
+            pass = $("#txtPassLogin").val();
+            err = '';
+            if (email == '') {
+                err += '-Please enter your email\n';
+            }
+            if(pass=='') {
+                err += '-Please enter your password\n';
+            }
+            if (err != '') {
+                alert(err);
+            }
+            else {
+                //check login
+                $.post(BASE_API + "user/login.aspx", {
+                    email: email,
+                    pass:pass
+                }, function (data) {
+                    if (data == 0) {
+                        alert('Wrong username/password please try again.');
+                    }
+                    else {
+
+                        localStorage.token = data;
+                        GoTo('page-post');
+                        $("#menu").show();
+
+                    }
+                });
+            }
+        }
+
+        function GoTo(id) {
+            $(".page").hide();
+
+            if (id == 'page-post') {
+                ViewPostList();
+            }
+
+            $("#"+id).show();
+        }
+
+        function ChangeTab(id) {
+            $(".page").hide();
+
+            $(".menu-active").removeClass("menu-active");
+            $(".menu-item").eq(id - 1).addClass("menu-active");
+            if (id == 1)
+                $("#page-post").show();
+            else if (id == 2)
+                $("#page-messages").show();
+            else if (id == 3)
+                $("#page-create-post").show();
+            else if (id == 4)
+                $("#page-account").show();
+        }
+
+        
+
+        function ViewPostList() {
+            $.ajax({
+                dataType: "json",
+                url: BASE_API+'post/get-top-post.aspx',
+                
+                success: function (data2) {
+                    //console.log(data2);
+                    pr_list = '';
+                    $.each(data2, function (key, val) {
+                        //console.log(key + " " + val.title);
+                        pr_list += '<div class="post-block" onclick="ViewPostDetails(' + val.post_id + ')">';
+                        pr_list += '<div class="post-img"><img src="/img/' + val.img + '" class="img-avt-circle rounded-circle" /></div>';
+                        pr_list += '<div class="post-desc">';
+                        pr_list += '<div class="post-title">' + val.title + '</div>';
+                        pr_list += '<div class="post-short-desc">'+val.short_desc+'</div>';
+                        pr_list += '</div>';
+                        pr_list += '<div class="post-clear"></div>';
+                        pr_list += '</div>';
+
+                        /*<div class="post-block" onclick="ViewPostDetails(1)">
+                            <div class="post-img"><img src="/img/pic-3.jpg" class="img-avt-circle rounded-circle" /></div>
+                            <div class="post-desc">
+                                <div class="post-title">Zata Inota</div>
+                                <div class="post-short-desc">
+                                    Hej er en stille og rolig kvinde på 48 år som søger veninder i nærheden af Vojens.
+                                    Kan godt lide at være kreativ,gå ture,hygge med en god film eller komme ud og opleve noget.
+                                </div>
+                            </div>
+                            <div class="post-clear"></div>
+                        </div>*/
+
+                    });
+                    $("#post-list").html(pr_list);
+
+                }
+            });
+        }
+
+        function ViewPostDetails(post_id) {
+
+            $.ajax({
+                dataType: "json",
+                url: BASE_API + 'post/get-top-content.aspx?post_id=' + post_id,
+                success: function (data) {
+                    
+                    $.each(data, function (key, val) {
+
+                        $("#post-details-img img").attr('src', "/img/"+val.img);
+                        $("#post-details-user").html('<i class="fas fa-user" style="margin-right:10px"></i>' + val.user_name);
+                        $("#post-details-title").html(val.title);
+                        $("#post-details-desc").html(val.post_content);
+                        
+                        GoTo('page-post-details');
+
+
+                    })
+
+                }
+            });
+                       
+        }
+
+
+        function GenerateYear() {
+            s_y = '<option value="0">Your birth year</option>';
+            for (i = 1970; i < 2007; i++) {
+                s_y += '<option value="'+i+'">'+i+'</option>';
+            }
+            $("#slYear").html(s_y);
+        }
+
+        function Logout() {
+            localStorage.clear();
+            GoTo('page-login');
+        }
+
+        
+
+        $(function () {
+            GenerateYear();
+            if (localStorage.token != null) {
+                GoTo('page-post');
+                $("#menu").show();
+            }
+            else {
+                $("#menu").hide();
+            }
+        });
+    </script>
+</head>
+<body>
+    <!---- Page Register ---->
+    <div id="page-register" class="page">
+
+        <div style="float:right">
+            <button class="btn btn-primary" style="margin:10px" onclick="GoTo('page-login')">Login</button>
+
+        </div>
+        <div style="clear:both">
+
+        </div>
+
+        <div class="logo-header">
+            BUBBLR
+        </div>
+        <div class="text-desc">
+            Find new communities, friendships and interests with 425,651 others
+        </div>
+
+        <!-- register form -->
+        <div id="form-register" class="col-xl-4 offset-xl-4 col-lg-6 offset-lg-3 col-8 offset-2">
+            <div style="color: #2a6592; text-align: center;margin-top:10px;font-weight:bold;font-size:15pt">
+                Join for free
+            </div>
+            <div>
+                <label></label>
+                <input type="text" class="form-control" id="txtName" placeholder="Your name" />
+            </div>
+            <div>
+                <label></label>
+                <select class="form-select" id="slCity">
+                    <option value="0">Your Municipality</option>
+                    <option value="1">Drago</option>
+                    <option value="2">Daxe</option>
+                </select>
+            </div>
+            <div>
+                <label></label>
+                <select class="form-select" id="slYear">
+                    <option value="0">Your birth year</option>
+                </select>
+            </div>
+            <div>
+                <label></label>
+                <input type="text" class="form-control" id="txtEmail" placeholder="Your email (not visible to others)" />
+            </div>
+            <div>
+                <label></label>
+                <input type="password" class="form-control" id="txtPass" placeholder="Password" />
+            </div>
+            <div>
+                <br />
+                I accept BUBBLR's <a href="#">privacy policy</a> and <a href="#">terms of service</a>
+            </div>
+            <div style="text-align:center">
+                <br />
+                <button class="btn btn-warning" style="color:white;width:150px" onclick="Register()" id="btnRegister">Join now</button>
+            </div>
+        </div>
+        <!-- ./ register form -->
+    </div>
+    <!--./ Page Register ---->
+    <!---- Page Login ---->
+    <div id="page-login" class="page" style="display:none">
+
+        <div style="float:right">
+            <button class="btn btn-warning" style="margin:10px" onclick="GoTo('page-register')">Register</button>
+
+        </div>
+        <div style="clear:both">
+
+        </div>
+
+        <div class="logo-header">
+            BUBBLR  | Welcome
+        </div>
+        <div class="text-desc">
+            Sign in to see all the exciting posts
+        </div>
+
+        <div id="form-Login" class="col-xl-4 offset-xl-4 col-lg-6 offset-lg-3 col-8 offset-2" style="margin-top:10px">
+            <div>
+                <input type="text" class="form-control" id="txtEmailLogin" placeholder="Email" />
+            </div>
+            <div style="margin-top:5px">
+
+                <input type="password" class="form-control" id="txtPassLogin" placeholder="Password" />
+            </div>
+            <div style="text-align:center;">
+                <br />
+                <button class="btn btn-primary" style="width:100%" onclick="Login()">Login</button>
+            </div>
+        </div>
+
+
+
+    </div>
+    <!--./ Page Login ---->
+    <!---- Page Post ---->
+    <div id="page-post" class="page" style="display:none">
+
+        <div class="col-xl-4 offset-xl-4 col-lg-6 offset-lg-3 col-12">
+            <div style="border-bottom:1px solid white;margin-top:20px;margin-bottom:20px">
+                <h4>Bubbs near you.</h4>
+            </div>
+
+            <div id="post-list">
+
+            </div>
+
+        </div>
+
+    </div>
+    <!--./ Page Post ---->
+    <!---- Page Post Details ---->
+    <div id="page-post-details" class="page" style="display:none">
+
+        <div class="menu-top-fix">
+            <div class="ic-back" onclick="GoTo('page-post')"><i class="fa fa-angle-left btn-back"></i> Bubbs</div>
+        </div>
+
+        <!-- post details content  -->
+        <div id="post-details-content-block" style="background-color:white;" class="rounded border-light border col-xl-4 offset-xl-4 col-lg-6 offset-lg-3 col-12">
+            <div id="post-details-img">
+                <img src="/img/pic-4.jpg" class="rounded-circle" />
+            </div>
+            <div id="post-details-user">
+                <i class="fas fa-user" style="margin-right:10px"></i> MG K
+            </div>
+            <div id="post-details-title">
+                Friends are wanted
+            </div>
+            <div id="post-details-desc">
+                Looking for new acquaintances where anything is possible ?? right from going for walks. in the city and drinking a beer, or just rocking a movie on NEtflix, write if it should be of interest?? is 36.
+            </div>
+            <div id="post-details-action" style="margin-top:10px;">
+                <button class="btn btn-secondary">
+                    <div class="fas fa-comment" style="margin-top:5px;margin-right:10px;float:left"></div> <div style="margin-top:0px;float:left">Send Message</div>
+                </button>
+            </div>
+        </div>
+
+    </div>
+    <!--./ Page Post Details ---->
+    <!---- Page Messages ---->
+    <div class="page" id="page-messages" style="display:none">
+        <div class="ic-back">Page Messages</div>
+    </div>
+    <!--./ Page Messages ---->
+    <!---- Page Account ---->
+    <div class="page" id="page-create-post" style="display:none">
+        <div class="ic-back">Page Create Post</div>
+    </div>
+    <!--./ Page Account ---->
+    <!---- Page Account ---->
+    <div class="page" id="page-account" style="display:none;">
+        <div class="ic-back">Page Account</div>
+
+        <button class="btn btn-primary" onclick="Logout()" style="margin-left:20px">
+            Log out
+        </button>
+    </div>
+    <!--./ Page Account ---->
+    <!-- GLOBAL :: header -->
+    <!-- GLOBAL:: bottom menu -->
+    <div class="row" id="menu" style="display:none">
+
+        <div class="col-3 menu-active menu-item" onclick="ChangeTab(1)"><i class="fa fa-adjust"></i><div class="icon-menu-desc">Bubbs</div></div>
+        <div class="col-3 menu-item" onclick="ChangeTab(2)"><i class="fas fa-comment"></i><div class="icon-menu-desc">Messages</div></div>
+        <div class="col-3 menu-item" onclick="ChangeTab(3)"><i class="fas fa-plus-circle"></i><div class="icon-menu-desc">Create Bubb</div></div>
+        <div class="col-3 menu-item" onclick="ChangeTab(4)"><i class="fas fa-user"></i><div class="icon-menu-desc">Account</div></div>
+
+    </div>
+</body>
+</html>

@@ -1,1 +1,257 @@
-﻿b
+﻿body {
+    background: rgb(237, 247, 249);
+}
+
+.page {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.logo-header {
+    text-align: center;
+    font-weight: bold;
+    font-size: 25pt;
+    color: brown;
+}
+
+.text-desc {
+    text-align: center;
+    font-size: 14pt;
+    font-weight: bold;
+}
+
+.btn {
+    font-weight: bold;
+}
+
+.post-block {
+    margin: 5px 5px 10px 5px;
+    cursor: pointer;
+}
+
+.post-img {
+    float: left;
+    width: 30%;
+    border: 0px;
+}
+
+.post-desc {
+    float: left;
+    width: 70%;
+}
+
+.post-clear {
+    clear: both;
+}
+
+.img-avt-circle {
+    border: 1px solid black;
+    max-width: 130px;
+    width: 100px;
+    height: 100px;
+}
+
+.post-title {
+    font-weight: bold;
+}
+
+.post-short-desc {
+    text-align: justify;
+}
+
+#menu {
+    text-align: center;
+    background-color: azure;
+    color: white;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+    /*padding-bottom: 15px;*/
+    z-index: 2;
+    border-top: 2px solid darkgray;
+}
+
+.menu-item {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    color: darkgray;
+    padding-top: 5px;
+}
+
+.icon-menu-desc {
+    font-size: 9px;
+    color: black;
+}
+
+.menu-active {
+    border-bottom: 2px solid #678df6;
+    padding-bottom: 3px;
+    color: #678df6 !important;
+}
+
+.ic-back {
+    font-size: 18px;
+    margin: 10px;
+    color: cadetblue;
+    cursor: pointer;
+}
+
+.btn-back {
+    margin-right: 10px;
+}
+/*block details*/
+#post-details-content-block {
+    padding: 20px;
+    text-align: center;
+}
+
+#post-details-img {
+}
+
+#post-details-user {
+    margin: 10px;
+    font-weight: bold;
+    color: cadetblue;
+}
+
+#post-details-title {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: left;
+}
+
+#post-details-desc {
+    text-align: left;
+}
+
+.validation {
+    color: red;
+    margin-bottom: -18px !important;
+    font-size: 12px;
+    margin-left: 10px;
+}
+
+.btn-link {
+    cursor: pointer;
+}
+
+
+
+/*create post*/
+#create-post-form-block .text-right
+{
+    font-weight:bold;
+}
+
+#post-photo
+{
+    width:100px;
+    height:100px;
+    border:2px solid red;
+}
+#post-photo-close {
+    font-size: 23px;
+    position: relative;
+    color: red;
+    margin-left: 120px;
+    margin-top: -105px;
+    margin-bottom: 70px;
+    display:none;
+}
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: whitesmoke;
+}
+
+/*conversation*/
+.room-block {
+    cursor:pointer;
+}
+.chat-date {
+    font-size:11px;
+    text-align:center;
+}
+.chat-time {
+    font-size: 8px;
+    text-align:right;
+}
+
+.chat-right {
+    text-align: left;
+    padding: 5px;
+    color: white;
+    background: #0084ff;
+    padding: 5px;
+    border-radius: 5px;
+    max-width: 200px;
+    float: right;
+    margin: 4px;
+}
+.chat-left {
+    text-align: left;
+    padding: 5px;
+    background: #3e4042;
+    color: white;
+    border-radius: 5px;
+    max-width: 200px;
+    float: left;
+    margin: 4px;
+}
+
+#post-details-img img
+{
+    max-width:200px;
+    width:150px;
+    height:150px;
+}
+
+.room-user-post
+{
+    font-weight:bold;
+}
+.room-last-chat
+{
+    color:darkgrey;
+}
+
+.room-img
+{
+    max-width:50px;
+    float:left;
+    width:50px;
+    height:50px;
+    margin-right:10px;
+    margin-bottom:10px;
+    cursor:pointer;
+}
+.room-img:hover
+{
+    box-shadow:1px 2px darkgray;
+    border:1px solid white;
+}
+
+#post-list
+{
+    margin-bottom:70px;
+}
+#my-post-details-img img
+{
+    width:200px;
+    height:200px;
+    margin-bottom:30px;
+}

@@ -1,6 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="bubblr" Class="DataClassesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="WebSettings" ConnectionString="Data Source=125.212.218.20\MSSQLSERVER2016;Initial Catalog=bubblr;Persist Security Info=True;User ID=test3" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="bubblrConnectionString" Provider="System.Data.SqlClient" />
-  <Table Name="test3.[user]" Member="users">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=targetvn.com;Initial Catalog=bubblr;Persist Security Info=True;User ID=admin_db2" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="bubblrConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="admin_db2.mess" Member="messes">
+    <Type Name="mess">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ConverId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="FromId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Mess" Member="Mess1" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="SentDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Status" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="user_mess" Member="user" ThisKey="FromId" OtherKey="Id" Type="user" IsForeignKey="true" />
+      <Association Name="conversation_mess" Member="conversation" ThisKey="ConverId" OtherKey="Id" Type="conversation" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="admin_db2.[user]" Member="users">
     <Type Name="user">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="Name" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
@@ -10,20 +22,39 @@
       <Column Name="Password" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
       <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="Status" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Token" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="Avatar" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="user_mess" Member="messes" ThisKey="Id" OtherKey="FromId" Type="mess" />
       <Association Name="user_post" Member="posts" ThisKey="Id" OtherKey="UserId" Type="post" />
+      <Association Name="user_conversation" Member="conversations" ThisKey="Id" OtherKey="Created_UserId" Type="conversation" />
     </Type>
   </Table>
-  <Table Name="test3.post" Member="posts">
+  <Table Name="admin_db2.post" Member="posts">
     <Type Name="post">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="Picture" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Picture" Type="System.String" DbType="NVarChar(80)" CanBeNull="true" />
       <Column Name="Title" Type="System.String" DbType="NVarChar(120)" CanBeNull="true" />
       <Column Name="ShortDesc" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
       <Column Name="ContDesc" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
       <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="UserId" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="Status" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Location" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="post_conversation" Member="conversations" ThisKey="Id" OtherKey="PostId" Type="conversation" />
       <Association Name="user_post" Member="user" ThisKey="UserId" OtherKey="Id" Type="user" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="admin_db2.conversation" Member="conversations">
+    <Type Name="conversation">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Created_UserId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PostId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Status" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LastUpdate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="conversation_mess" Member="messes" ThisKey="Id" OtherKey="ConverId" Type="mess" />
+      <Association Name="post_conversation" Member="post" ThisKey="PostId" OtherKey="Id" Type="post" IsForeignKey="true" />
+      <Association Name="user_conversation" Member="user" ThisKey="Created_UserId" OtherKey="Id" Type="user" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

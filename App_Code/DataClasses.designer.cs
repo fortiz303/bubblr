@@ -29,12 +29,18 @@ public partial class DataClassesDataContext : System.Data.Linq.DataContext
 	
   #region Extensibility Method Definitions
   partial void OnCreated();
+  partial void Insertmess(mess instance);
+  partial void Updatemess(mess instance);
+  partial void Deletemess(mess instance);
   partial void Insertuser(user instance);
   partial void Updateuser(user instance);
   partial void Deleteuser(user instance);
   partial void Insertpost(post instance);
   partial void Updatepost(post instance);
   partial void Deletepost(post instance);
+  partial void Insertconversation(conversation instance);
+  partial void Updateconversation(conversation instance);
+  partial void Deleteconversation(conversation instance);
   #endregion
 	
 	public DataClassesDataContext() : 
@@ -67,6 +73,14 @@ public partial class DataClassesDataContext : System.Data.Linq.DataContext
 		OnCreated();
 	}
 	
+	public System.Data.Linq.Table<mess> messes
+	{
+		get
+		{
+			return this.GetTable<mess>();
+		}
+	}
+	
 	public System.Data.Linq.Table<user> users
 	{
 		get
@@ -82,9 +96,281 @@ public partial class DataClassesDataContext : System.Data.Linq.DataContext
 			return this.GetTable<post>();
 		}
 	}
+	
+	public System.Data.Linq.Table<conversation> conversations
+	{
+		get
+		{
+			return this.GetTable<conversation>();
+		}
+	}
 }
 
-[global::System.Data.Linq.Mapping.TableAttribute(Name="test3.[user]")]
+[global::System.Data.Linq.Mapping.TableAttribute(Name="admin_db2.mess")]
+public partial class mess : INotifyPropertyChanging, INotifyPropertyChanged
+{
+	
+	private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+	
+	private int _Id;
+	
+	private System.Nullable<int> _ConverId;
+	
+	private System.Nullable<int> _FromId;
+	
+	private string _Mess1;
+	
+	private System.Nullable<System.DateTime> _SentDate;
+	
+	private System.Nullable<int> _Status;
+	
+	private EntityRef<user> _user;
+	
+	private EntityRef<conversation> _conversation;
+	
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnConverIdChanging(System.Nullable<int> value);
+    partial void OnConverIdChanged();
+    partial void OnFromIdChanging(System.Nullable<int> value);
+    partial void OnFromIdChanged();
+    partial void OnMess1Changing(string value);
+    partial void OnMess1Changed();
+    partial void OnSentDateChanging(System.Nullable<System.DateTime> value);
+    partial void OnSentDateChanged();
+    partial void OnStatusChanging(System.Nullable<int> value);
+    partial void OnStatusChanged();
+    #endregion
+	
+	public mess()
+	{
+		this._user = default(EntityRef<user>);
+		this._conversation = default(EntityRef<conversation>);
+		OnCreated();
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+	public int Id
+	{
+		get
+		{
+			return this._Id;
+		}
+		set
+		{
+			if ((this._Id != value))
+			{
+				this.OnIdChanging(value);
+				this.SendPropertyChanging();
+				this._Id = value;
+				this.SendPropertyChanged("Id");
+				this.OnIdChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ConverId", DbType="Int")]
+	public System.Nullable<int> ConverId
+	{
+		get
+		{
+			return this._ConverId;
+		}
+		set
+		{
+			if ((this._ConverId != value))
+			{
+				if (this._conversation.HasLoadedOrAssignedValue)
+				{
+					throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+				}
+				this.OnConverIdChanging(value);
+				this.SendPropertyChanging();
+				this._ConverId = value;
+				this.SendPropertyChanged("ConverId");
+				this.OnConverIdChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FromId", DbType="Int")]
+	public System.Nullable<int> FromId
+	{
+		get
+		{
+			return this._FromId;
+		}
+		set
+		{
+			if ((this._FromId != value))
+			{
+				if (this._user.HasLoadedOrAssignedValue)
+				{
+					throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+				}
+				this.OnFromIdChanging(value);
+				this.SendPropertyChanging();
+				this._FromId = value;
+				this.SendPropertyChanged("FromId");
+				this.OnFromIdChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Name="Mess", Storage="_Mess1", DbType="NVarChar(500)")]
+	public string Mess1
+	{
+		get
+		{
+			return this._Mess1;
+		}
+		set
+		{
+			if ((this._Mess1 != value))
+			{
+				this.OnMess1Changing(value);
+				this.SendPropertyChanging();
+				this._Mess1 = value;
+				this.SendPropertyChanged("Mess1");
+				this.OnMess1Changed();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SentDate", DbType="DateTime")]
+	public System.Nullable<System.DateTime> SentDate
+	{
+		get
+		{
+			return this._SentDate;
+		}
+		set
+		{
+			if ((this._SentDate != value))
+			{
+				this.OnSentDateChanging(value);
+				this.SendPropertyChanging();
+				this._SentDate = value;
+				this.SendPropertyChanged("SentDate");
+				this.OnSentDateChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Status", DbType="Int")]
+	public System.Nullable<int> Status
+	{
+		get
+		{
+			return this._Status;
+		}
+		set
+		{
+			if ((this._Status != value))
+			{
+				this.OnStatusChanging(value);
+				this.SendPropertyChanging();
+				this._Status = value;
+				this.SendPropertyChanged("Status");
+				this.OnStatusChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.AssociationAttribute(Name="user_mess", Storage="_user", ThisKey="FromId", OtherKey="Id", IsForeignKey=true)]
+	public user user
+	{
+		get
+		{
+			return this._user.Entity;
+		}
+		set
+		{
+			user previousValue = this._user.Entity;
+			if (((previousValue != value) 
+						|| (this._user.HasLoadedOrAssignedValue == false)))
+			{
+				this.SendPropertyChanging();
+				if ((previousValue != null))
+				{
+					this._user.Entity = null;
+					previousValue.messes.Remove(this);
+				}
+				this._user.Entity = value;
+				if ((value != null))
+				{
+					value.messes.Add(this);
+					this._FromId = value.Id;
+				}
+				else
+				{
+					this._FromId = default(Nullable<int>);
+				}
+				this.SendPropertyChanged("user");
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.AssociationAttribute(Name="conversation_mess", Storage="_conversation", ThisKey="ConverId", OtherKey="Id", IsForeignKey=true)]
+	public conversation conversation
+	{
+		get
+		{
+			return this._conversation.Entity;
+		}
+		set
+		{
+			conversation previousValue = this._conversation.Entity;
+			if (((previousValue != value) 
+						|| (this._conversation.HasLoadedOrAssignedValue == false)))
+			{
+				this.SendPropertyChanging();
+				if ((previousValue != null))
+				{
+					this._conversation.Entity = null;
+					previousValue.messes.Remove(this);
+				}
+				this._conversation.Entity = value;
+				if ((value != null))
+				{
+					value.messes.Add(this);
+					this._ConverId = value.Id;
+				}
+				else
+				{
+					this._ConverId = default(Nullable<int>);
+				}
+				this.SendPropertyChanged("conversation");
+			}
+		}
+	}
+	
+	public event PropertyChangingEventHandler PropertyChanging;
+	
+	public event PropertyChangedEventHandler PropertyChanged;
+	
+	protected virtual void SendPropertyChanging()
+	{
+		if ((this.PropertyChanging != null))
+		{
+			this.PropertyChanging(this, emptyChangingEventArgs);
+		}
+	}
+	
+	protected virtual void SendPropertyChanged(String propertyName)
+	{
+		if ((this.PropertyChanged != null))
+		{
+			this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+		}
+	}
+}
+
+[global::System.Data.Linq.Mapping.TableAttribute(Name="admin_db2.[user]")]
 public partial class user : INotifyPropertyChanging, INotifyPropertyChanged
 {
 	
@@ -106,7 +392,15 @@ public partial class user : INotifyPropertyChanging, INotifyPropertyChanged
 	
 	private System.Nullable<int> _Status;
 	
+	private string _Token;
+	
+	private string _Avatar;
+	
+	private EntitySet<mess> _messes;
+	
 	private EntitySet<post> _posts;
+	
+	private EntitySet<conversation> _conversations;
 	
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -128,11 +422,17 @@ public partial class user : INotifyPropertyChanging, INotifyPropertyChanged
     partial void OnCreatedDateChanged();
     partial void OnStatusChanging(System.Nullable<int> value);
     partial void OnStatusChanged();
+    partial void OnTokenChanging(string value);
+    partial void OnTokenChanged();
+    partial void OnAvatarChanging(string value);
+    partial void OnAvatarChanged();
     #endregion
 	
 	public user()
 	{
+		this._messes = new EntitySet<mess>(new Action<mess>(this.attach_messes), new Action<mess>(this.detach_messes));
 		this._posts = new EntitySet<post>(new Action<post>(this.attach_posts), new Action<post>(this.detach_posts));
+		this._conversations = new EntitySet<conversation>(new Action<conversation>(this.attach_conversations), new Action<conversation>(this.detach_conversations));
 		OnCreated();
 	}
 	
@@ -296,6 +596,59 @@ public partial class user : INotifyPropertyChanging, INotifyPropertyChanged
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Token", DbType="NVarChar(100)")]
+	public string Token
+	{
+		get
+		{
+			return this._Token;
+		}
+		set
+		{
+			if ((this._Token != value))
+			{
+				this.OnTokenChanging(value);
+				this.SendPropertyChanging();
+				this._Token = value;
+				this.SendPropertyChanged("Token");
+				this.OnTokenChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Avatar", DbType="NVarChar(50)")]
+	public string Avatar
+	{
+		get
+		{
+			return this._Avatar;
+		}
+		set
+		{
+			if ((this._Avatar != value))
+			{
+				this.OnAvatarChanging(value);
+				this.SendPropertyChanging();
+				this._Avatar = value;
+				this.SendPropertyChanged("Avatar");
+				this.OnAvatarChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.AssociationAttribute(Name="user_mess", Storage="_messes", ThisKey="Id", OtherKey="FromId")]
+	public EntitySet<mess> messes
+	{
+		get
+		{
+			return this._messes;
+		}
+		set
+		{
+			this._messes.Assign(value);
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.AssociationAttribute(Name="user_post", Storage="_posts", ThisKey="Id", OtherKey="UserId")]
 	public EntitySet<post> posts
 	{
@@ -306,6 +659,19 @@ public partial class user : INotifyPropertyChanging, INotifyPropertyChanged
 		set
 		{
 			this._posts.Assign(value);
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.AssociationAttribute(Name="user_conversation", Storage="_conversations", ThisKey="Id", OtherKey="Created_UserId")]
+	public EntitySet<conversation> conversations
+	{
+		get
+		{
+			return this._conversations;
+		}
+		set
+		{
+			this._conversations.Assign(value);
 		}
 	}
 	
@@ -329,6 +695,18 @@ public partial class user : INotifyPropertyChanging, INotifyPropertyChanged
 		}
 	}
 	
+	private void attach_messes(mess entity)
+	{
+		this.SendPropertyChanging();
+		entity.user = this;
+	}
+	
+	private void detach_messes(mess entity)
+	{
+		this.SendPropertyChanging();
+		entity.user = null;
+	}
+	
 	private void attach_posts(post entity)
 	{
 		this.SendPropertyChanging();
@@ -340,9 +718,21 @@ public partial class user : INotifyPropertyChanging, INotifyPropertyChanged
 		this.SendPropertyChanging();
 		entity.user = null;
 	}
+	
+	private void attach_conversations(conversation entity)
+	{
+		this.SendPropertyChanging();
+		entity.user = this;
+	}
+	
+	private void detach_conversations(conversation entity)
+	{
+		this.SendPropertyChanging();
+		entity.user = null;
+	}
 }
 
-[global::System.Data.Linq.Mapping.TableAttribute(Name="test3.post")]
+[global::System.Data.Linq.Mapping.TableAttribute(Name="admin_db2.post")]
 public partial class post : INotifyPropertyChanging, INotifyPropertyChanged
 {
 	
@@ -363,6 +753,10 @@ public partial class post : INotifyPropertyChanging, INotifyPropertyChanged
 	private System.Nullable<int> _UserId;
 	
 	private System.Nullable<int> _Status;
+	
+	private string _Location;
+	
+	private EntitySet<conversation> _conversations;
 	
 	private EntityRef<user> _user;
 	
@@ -386,10 +780,13 @@ public partial class post : INotifyPropertyChanging, INotifyPropertyChanged
     partial void OnUserIdChanged();
     partial void OnStatusChanging(System.Nullable<int> value);
     partial void OnStatusChanged();
+    partial void OnLocationChanging(string value);
+    partial void OnLocationChanged();
     #endregion
 	
 	public post()
 	{
+		this._conversations = new EntitySet<conversation>(new Action<conversation>(this.attach_conversations), new Action<conversation>(this.detach_conversations));
 		this._user = default(EntityRef<user>);
 		OnCreated();
 	}
@@ -414,7 +811,7 @@ public partial class post : INotifyPropertyChanging, INotifyPropertyChanged
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Picture", DbType="NVarChar(50)")]
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Picture", DbType="NVarChar(80)")]
 	public string Picture
 	{
 		get
@@ -558,6 +955,39 @@ public partial class post : INotifyPropertyChanging, INotifyPropertyChanged
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Location", DbType="NVarChar(50)")]
+	public string Location
+	{
+		get
+		{
+			return this._Location;
+		}
+		set
+		{
+			if ((this._Location != value))
+			{
+				this.OnLocationChanging(value);
+				this.SendPropertyChanging();
+				this._Location = value;
+				this.SendPropertyChanged("Location");
+				this.OnLocationChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.AssociationAttribute(Name="post_conversation", Storage="_conversations", ThisKey="Id", OtherKey="PostId")]
+	public EntitySet<conversation> conversations
+	{
+		get
+		{
+			return this._conversations;
+		}
+		set
+		{
+			this._conversations.Assign(value);
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.AssociationAttribute(Name="user_post", Storage="_user", ThisKey="UserId", OtherKey="Id", IsForeignKey=true)]
 	public user user
 	{
@@ -610,6 +1040,310 @@ public partial class post : INotifyPropertyChanging, INotifyPropertyChanged
 		{
 			this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 		}
+	}
+	
+	private void attach_conversations(conversation entity)
+	{
+		this.SendPropertyChanging();
+		entity.post = this;
+	}
+	
+	private void detach_conversations(conversation entity)
+	{
+		this.SendPropertyChanging();
+		entity.post = null;
+	}
+}
+
+[global::System.Data.Linq.Mapping.TableAttribute(Name="admin_db2.conversation")]
+public partial class conversation : INotifyPropertyChanging, INotifyPropertyChanged
+{
+	
+	private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+	
+	private int _Id;
+	
+	private System.Nullable<int> _Created_UserId;
+	
+	private System.Nullable<int> _PostId;
+	
+	private System.Nullable<System.DateTime> _CreatedDate;
+	
+	private System.Nullable<int> _Status;
+	
+	private System.Nullable<System.DateTime> _LastUpdate;
+	
+	private EntitySet<mess> _messes;
+	
+	private EntityRef<post> _post;
+	
+	private EntityRef<user> _user;
+	
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnCreated_UserIdChanging(System.Nullable<int> value);
+    partial void OnCreated_UserIdChanged();
+    partial void OnPostIdChanging(System.Nullable<int> value);
+    partial void OnPostIdChanged();
+    partial void OnCreatedDateChanging(System.Nullable<System.DateTime> value);
+    partial void OnCreatedDateChanged();
+    partial void OnStatusChanging(System.Nullable<int> value);
+    partial void OnStatusChanged();
+    partial void OnLastUpdateChanging(System.Nullable<System.DateTime> value);
+    partial void OnLastUpdateChanged();
+    #endregion
+	
+	public conversation()
+	{
+		this._messes = new EntitySet<mess>(new Action<mess>(this.attach_messes), new Action<mess>(this.detach_messes));
+		this._post = default(EntityRef<post>);
+		this._user = default(EntityRef<user>);
+		OnCreated();
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+	public int Id
+	{
+		get
+		{
+			return this._Id;
+		}
+		set
+		{
+			if ((this._Id != value))
+			{
+				this.OnIdChanging(value);
+				this.SendPropertyChanging();
+				this._Id = value;
+				this.SendPropertyChanged("Id");
+				this.OnIdChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Created_UserId", DbType="Int")]
+	public System.Nullable<int> Created_UserId
+	{
+		get
+		{
+			return this._Created_UserId;
+		}
+		set
+		{
+			if ((this._Created_UserId != value))
+			{
+				if (this._user.HasLoadedOrAssignedValue)
+				{
+					throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+				}
+				this.OnCreated_UserIdChanging(value);
+				this.SendPropertyChanging();
+				this._Created_UserId = value;
+				this.SendPropertyChanged("Created_UserId");
+				this.OnCreated_UserIdChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PostId", DbType="Int")]
+	public System.Nullable<int> PostId
+	{
+		get
+		{
+			return this._PostId;
+		}
+		set
+		{
+			if ((this._PostId != value))
+			{
+				if (this._post.HasLoadedOrAssignedValue)
+				{
+					throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+				}
+				this.OnPostIdChanging(value);
+				this.SendPropertyChanging();
+				this._PostId = value;
+				this.SendPropertyChanged("PostId");
+				this.OnPostIdChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedDate", DbType="DateTime")]
+	public System.Nullable<System.DateTime> CreatedDate
+	{
+		get
+		{
+			return this._CreatedDate;
+		}
+		set
+		{
+			if ((this._CreatedDate != value))
+			{
+				this.OnCreatedDateChanging(value);
+				this.SendPropertyChanging();
+				this._CreatedDate = value;
+				this.SendPropertyChanged("CreatedDate");
+				this.OnCreatedDateChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Status", DbType="Int")]
+	public System.Nullable<int> Status
+	{
+		get
+		{
+			return this._Status;
+		}
+		set
+		{
+			if ((this._Status != value))
+			{
+				this.OnStatusChanging(value);
+				this.SendPropertyChanging();
+				this._Status = value;
+				this.SendPropertyChanged("Status");
+				this.OnStatusChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LastUpdate", DbType="DateTime")]
+	public System.Nullable<System.DateTime> LastUpdate
+	{
+		get
+		{
+			return this._LastUpdate;
+		}
+		set
+		{
+			if ((this._LastUpdate != value))
+			{
+				this.OnLastUpdateChanging(value);
+				this.SendPropertyChanging();
+				this._LastUpdate = value;
+				this.SendPropertyChanged("LastUpdate");
+				this.OnLastUpdateChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.AssociationAttribute(Name="conversation_mess", Storage="_messes", ThisKey="Id", OtherKey="ConverId")]
+	public EntitySet<mess> messes
+	{
+		get
+		{
+			return this._messes;
+		}
+		set
+		{
+			this._messes.Assign(value);
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.AssociationAttribute(Name="post_conversation", Storage="_post", ThisKey="PostId", OtherKey="Id", IsForeignKey=true)]
+	public post post
+	{
+		get
+		{
+			return this._post.Entity;
+		}
+		set
+		{
+			post previousValue = this._post.Entity;
+			if (((previousValue != value) 
+						|| (this._post.HasLoadedOrAssignedValue == false)))
+			{
+				this.SendPropertyChanging();
+				if ((previousValue != null))
+				{
+					this._post.Entity = null;
+					previousValue.conversations.Remove(this);
+				}
+				this._post.Entity = value;
+				if ((value != null))
+				{
+					value.conversations.Add(this);
+					this._PostId = value.Id;
+				}
+				else
+				{
+					this._PostId = default(Nullable<int>);
+				}
+				this.SendPropertyChanged("post");
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.AssociationAttribute(Name="user_conversation", Storage="_user", ThisKey="Created_UserId", OtherKey="Id", IsForeignKey=true)]
+	public user user
+	{
+		get
+		{
+			return this._user.Entity;
+		}
+		set
+		{
+			user previousValue = this._user.Entity;
+			if (((previousValue != value) 
+						|| (this._user.HasLoadedOrAssignedValue == false)))
+			{
+				this.SendPropertyChanging();
+				if ((previousValue != null))
+				{
+					this._user.Entity = null;
+					previousValue.conversations.Remove(this);
+				}
+				this._user.Entity = value;
+				if ((value != null))
+				{
+					value.conversations.Add(this);
+					this._Created_UserId = value.Id;
+				}
+				else
+				{
+					this._Created_UserId = default(Nullable<int>);
+				}
+				this.SendPropertyChanged("user");
+			}
+		}
+	}
+	
+	public event PropertyChangingEventHandler PropertyChanging;
+	
+	public event PropertyChangedEventHandler PropertyChanged;
+	
+	protected virtual void SendPropertyChanging()
+	{
+		if ((this.PropertyChanging != null))
+		{
+			this.PropertyChanging(this, emptyChangingEventArgs);
+		}
+	}
+	
+	protected virtual void SendPropertyChanged(String propertyName)
+	{
+		if ((this.PropertyChanged != null))
+		{
+			this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+		}
+	}
+	
+	private void attach_messes(mess entity)
+	{
+		this.SendPropertyChanging();
+		entity.conversation = this;
+	}
+	
+	private void detach_messes(mess entity)
+	{
+		this.SendPropertyChanging();
+		entity.conversation = null;
 	}
 }
 #pragma warning restore 1591

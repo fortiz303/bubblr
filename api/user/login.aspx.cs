@@ -19,7 +19,7 @@ public partial class api_user_login : System.Web.UI.Page
 
         if(u!=null)
         {
-            Response.Write(UTIL.Encrypt(email+"@@"+pass,true) );
+            Response.Write(UTIL.Encrypt(email+"@@"+pass,true) + "uid" + u.Id);
         }
         else
         {

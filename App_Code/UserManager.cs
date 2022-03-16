@@ -17,6 +17,11 @@ public class UserManager
 
 	DataClassesDataContext db = new DataClassesDataContext();
 
+	public List<user> GetAllUsers()
+    {
+		return db.users.ToList();
+    }
+
 	public void AddUser(user u)
     {
 		db.users.InsertOnSubmit(u);
@@ -37,8 +42,9 @@ public class UserManager
     {
 		db.SubmitChanges();
     }
-	public user CheckToken(string e, string p)
+
+	public user CheckToken(string token)
     {
-		return db.users.Where(u => u.Email == e && u.Password == p && u.Status == 1).FirstOrDefault();
+		return db.users.Where(t => t.Token == token).FirstOrDefault();
     }
 }

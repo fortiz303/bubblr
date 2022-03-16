@@ -8,24 +8,28 @@ using System.Web;
 /// </summary>
 public class PostManager
 {
-    public PostManager()
+	public PostManager()
+	{
+		//
+		// TODO: Add constructor logic here
+		//
+	}
+
+
+	DataClassesDataContext db = new DataClassesDataContext();
+	
+	public List<post> GetTopList()
     {
-        //
-        // TODO: Add constructor logic here
-        //
+		return db.posts.Where(t => t.Status == 1).OrderByDescending(t=>t.Id).Take(100).ToList();
     }
 
-
-    DataClassesDataContext db = new DataClassesDataContext();
-
-    public List<post> GetTopList()
+	public post GetPostById(int post_id)
     {
-        return db.posts.Where(t => t.Status == 1).OrderByDescending(t => t.Id).Take(100).ToList();
+		return db.posts.Where(t => t.Id == post_id && t.Status == 1).FirstOrDefault();
     }
-
-    public post GetPostById(int post_id)
+    public List<post> GetListPostByIdUser(int userid)
     {
-        return db.posts.Where(t => t.Id == post_id && t.Status == 1).FirstOrDefault();
+        return db.posts.Where(t => t.UserId == userid && t.Status == 1).OrderByDescending(t => t.Id).ToList();
     }
     public void CreatePost(post p)
     {
@@ -36,5 +40,4 @@ public class PostManager
     {
         db.SubmitChanges();
     }
-
 }

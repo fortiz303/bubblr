@@ -1,0 +1,1 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="get-list-post-by-user.aspx.cs" Inherits="api_post_get_list_post_by_user" %>

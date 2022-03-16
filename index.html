@@ -3,202 +3,139 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-    <title>BUBBLR</title>
+    <title>BUBBLR v1.0.3</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-    <style>
-        body {
-            background: rgb(237, 247, 249);
-        }
 
-        .page {
-            padding-left: 10px;
-            padding-right: 10px;
-        }
 
-        .logo-header {
-            text-align: center;
-            font-weight: bold;
-            font-size: 25pt;
-            color: brown;
-        }
+    <link href="css/style.css?v=1.0.3.1" rel="stylesheet" />
 
-        .text-desc {
-            text-align: center;
-            font-size: 14pt;
-            font-weight: bold;
-        }
+    <script>
+        BASE_API = "/api/";
 
-        .btn {
-            font-weight: bold;
-        }
+        function Validate(ic) {
+            var name = $("#txtName").val();
+            var city = $("#slCity").val();
+            var year = $("#slYear").val();
+            var email = $("#txtEmail").val();
+            var pass = $("#txtPass").val();
 
-        .post-block {
-            margin: 5px 5px 10px 5px;
-            cursor: pointer;
-        }
+            flag_Err = 0;
+            if (ic == 0) {
 
-        .post-img {
-            float: left;
-            width: 30%;
-            border: 0px;
-        }
+                $(".validation").remove();
 
-        .post-desc {
-            float: left;
-            width: 70%;
-        }
+                if (name == '') {
+                    $("#txtName").parent().after("<div class='validation' style='color:red;margin-bottom: 5px;'>Please enter your name</div>");
+                    flag_Err = 1;
+                }
+                else if (name.length == 1) {
+                    $("#txtName").parent().after("<div class='validation' style='color:red;margin-bottom: 5px;'>Your name is too short </div>");
+                    flag_Err = 1;
+                }
 
-        .post-clear {
-            clear: both;
-        }
+                if (city == 0) {
 
-        .img-avt-circle {
-            border: 1px solid black;
-            max-width: 130px;
-            width: 90%;
-        }
+                    $("#slCity").parent().after("<div class='validation' style='color:red;margin-bottom: 5px;'>Please select your city</div>");
+                    flag_Err = 1;
+                }
+                if (year == 0) {
 
-        .post-title {
-            font-weight: bold;
-        }
+                    $("#slYear").parent().after("<div class='validation' style='color:red;margin-bottom: 5px;'>Please select your birth year</div>");
+                    flag_Err = 1;
 
-        .post-short-desc {
-            text-align: justify;
-        }
+                }
+                if (email == '') {
 
-        #menu {
-            text-align: center;
-            background-color: azure;
-            color: white;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            margin: 0px;
-            padding: 0px;
-            /*padding-bottom: 15px;*/
-            z-index: 2;
-            border-top: 2px solid darkgray;
-        }
+                    $("#txtEmail").parent().after("<div class='validation' style='color:red;margin-bottom: 5px;'>Please enter email address</div>");
+                    flag_Err = 1;
+                }
+                if (email.length >= 1) {
+                    var email2 = document.getElementById('txtEmail');
+                    var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 
-        .menu-item {
-            padding-top: 5px;
-            padding-bottom: 5px;
-            color: darkgray;
-            padding-top: 5px;
-        }
+                    if (!filter.test(email2.value)) {
 
-        .icon-menu-desc {
-            font-size: 9px;
-            color: black;
-        }
+                        $("#txtEmail").parent().after("<div class='validation' style='color:red;margin-bottom: 5px;'>Please provide a valid email address</div>");
+                        flag_Err = 1;
+                    }
+                }
 
-        .menu-active {
-            border-bottom: 2px solid #678df6;
-            padding-bottom: 3px;
-            color: #678df6 !important;
-        }
+                if (pass == '') {
+                    $("#txtPass").parent().after("<div class='validation' style='color:red;margin-bottom: 5px;'>Please enter your password</div>");
+                    flag_Err = 1;
+                }
+            }
+            else if (ic == 1) {
+                $("#txtName").parent().next(".validation").remove();
 
-        .ic-back {
-            font-size: 18px;
-            margin: 10px;
-            color: cadetblue;
-            cursor: pointer;
-        }
+                if (name == '') {
+                    $("#txtName").parent().after("<div class='validation' style='color:red;margin-bottom: 5px;'>Please enter your name</div>");
+                }
 
-        .btn-back {
-            margin-right: 10px;
-        }
-        /*block details*/
-        #post-details-content-block {
-            padding: 20px;
-            text-align: center;
-        }
 
-        #post-details-img {
-        }
+                if (name.length == 1) {
+                    $("#txtName").parent().after("<div class='validation' style='color:red;margin-bottom: 5px;'>Your name is too short </div>");
+                }
 
-        #post-details-user {
-            margin: 10px;
-            font-weight: bold;
-            color: cadetblue;
-        }
+            }
+            else if (ic == 2) {
+                // citi
+                if (city != 0) {
+                    $("#slCity").parent().next(".validation").remove();
+                }
+                else {
+                    $("#slCity").parent().after("<div class='validation' style='color:red;margin-bottom: 5px;'>Please select your city</div>");
+                }
+            }
+            else if (ic == 3) {
+                // year of birth
+                if (year == 0) {
+                    $("#slYear").parent().after("<div class='validation' style='color:red;margin-bottom: 5px;'>Please select your birth year</div>");
+                }
+                else {
+                    $("#slYear").parent().next(".validation").remove();
+                }
+            }
+            else if (ic == 4) {
+                $("#txtEmail").parent().next(".validation").remove();
+                if (email == '') {
 
-        #post-details-title {
-            font-size: 20px;
-            font-weight: bold;
-            text-align: left;
-        }
+                    $("#txtEmail").parent().after("<div class='validation' style='color:red;margin-bottom: 5px;'>Please enter email address</div>");
 
-        #post-details-desc {
-            text-align: left;
-        }
+                }
+                if (email.length >= 1) {
+                    var email2 = document.getElementById('txtEmail');
+                    var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 
-        .validation {
-            color: red;
-            margin-bottom: -18px !important;
-            font-size: 12px;
-            margin-left: 10px;
-        }
+                    if (!filter.test(email2.value)) {
 
-        /* create post*/
-        .wrap-list-image-trip {
-            width: 100%;
-            overflow: auto;
-            padding: 10px;
-        }
-        /*up img in crate post*/
-        .fileUpload {
-            position: relative;
-            width: fit-content;
-        }
-
-            .fileUpload .upload {
-                position: absolute;
-                top: 0;
-                left: 0;
-                margin: 0;
-                padding: 0;
-                width: 100%;
-                height: 100%;
-                cursor: pointer;
-                opacity: 0;
+                        $("#txtEmail").parent().after("<div class='validation' style='color:red;margin-bottom: 5px;'>Please provide a valid email address</div>");
+                    }
+                }
+            }
+            else if (ic == 5) {
+                if (pass == '') {
+                    $("#txtPass").parent().after("<div class='validation' style='color:red;margin-bottom: 5px;'>Please enter your password</div>");
+                }
+                else {
+                    $("#txtPass").parent().next(".validation").remove();
+                }
             }
 
 
-        .list-image-trip {
-            height: 120px;
-            width: 4000px;
+            return flag_Err;
+
         }
 
-        .ui-sortable-handle.ui-sortable-placeholder {
-            /*display:none;*/
-            float: left;
-        }
-
-        .th-short-desc {
-            width: 40%;
-        }
-
-        .td-short-desc {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            line-height: 16px !important; /* fallback */
-            max-height: 45px; /* fallback */
-            -webkit-line-clamp: 2; /* number of lines to show */
-            -webkit-box-orient: vertical;
-        }
-    </style>
-    <script>
-        BASE_API = "/api/";
         function Register() {
 
             $("#btnRegister").attr("disabled", "disabled");
             $(".validation").remove();
+
+
             var name = $("#txtName").val();
             var city = $("#slCity").val();
             var year = $("#slYear").val();
@@ -206,48 +143,17 @@
             var pass = $("#txtPass").val();
             var err = '';
 
+            flag_Err = Validate(0);
+
             //validate
-            if (name == '') {
-                err += '-Please enter your name\n';
-                $("#txtName").parent().after("<div class='validation' style='color:red;margin-bottom: 5px;'>Please enter your name</div>")
-            }
-            if (name.length == 1) {
-                $("#txtName").parent().after("<div class='validation' style='color:red;margin-bottom: 5px;'>Your name is too short </div>")
-            }
-            if (city == 0) {
-                err += '-Please select your city\n';
-                $("#slCity").parent().after("<div class='validation' style='color:red;margin-bottom: 5px;'>Please select your city</div>")
-            }
-            if (year == 0) {
-                err += '-Please select your birth year\n';
-                $("#slYear").parent().after("<div class='validation' style='color:red;margin-bottom: 5px;'>Please select your birth year</div>")
 
-            }
-            if (email == '') {
-                err += '-Please enter your email\n';
-                $("#txtEmail").parent().after("<div class='validation' style='color:red;margin-bottom: 5px;'>Please enter email address</div>")
-            }
-            if (email.length >= 1) {
-                var email2 = document.getElementById('txtEmail');
-                var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
 
-                if (!filter.test(email2.value)) {
-                    err += '-Please enter your email\n';
-                    $("#txtEmail").parent().after("<div class='validation' style='color:red;margin-bottom: 5px;'>Please provide a valid email address</div>")
-                }
-            }
-
-            if (pass == '') {
-                err += '-Please enter your pass\n';
-                $("#txtPass").parent().after("<div class='validation' style='color:red;margin-bottom: 5px;'>Please enter your password</div>")
-            }
-
-            if (err != '') {
-                /*alert(err);*/
+            if (flag_Err != 0) {
+                console.log('Register Error');
+                //alert(err);
                 $("#btnRegister").removeAttr("disabled");
             }
             else {
-
                 // send register
                 $.post(BASE_API + "user/register.aspx", {
                     name: name,
@@ -257,36 +163,22 @@
                     pass: pass
                 }, function (data) {
                     $("#btnRegister").removeAttr("disabled");
-                    //if (data == 1) {
-                    //    // clear form
-                    //    $("#txtName").val('');
-                    //    $('#txtEmail').val('');
-                    //    $('#txtPass').val('');
-                    //    $('#slCity').val('0');
-                    //    $('#slYear').val('0');
-                    //    alert("Your account has been created. Please login to chat.");
-                    //    /*GoTo('page-login');*/
-                    //    localStorage.token = data;
-                    //    GoTo('page-post');
-                    //    $("#menu").show();
-                    //}
+
                     if (data == 2) {
                         alert("Please try a different email.");
                     }
-                    if (data == 0) {
+                    else if (data == 0) {
                         alert("Something's wrong, please try again!");
                     }
                     else {
                         // clear form
-                        //$("#txtName").val('');
-                        //$('#txtEmail').val('');
-                        //$('#txtPass').val('');
-                        //$('#slCity').val('0');
-                        //$('#slYear').val('0');
-                        //alert("Your account has been created. Please login to chat.");
-                        /*GoTo('page-login');*/
+                        $("#txtName").val('');
+                        $('#txtEmail').val('');
+                        $('#txtPass').val('');
+                        $('#slCity').val('0');
+                        $('#slYear').val('0');
+                        alert("Your account has been created!");
                         localStorage.token = data;
-                        /*alert("OK!");*/
                         GoTo('page-post');
                         $("#menu").show();
                     }
@@ -301,13 +193,16 @@
             err = '';
             if (email == '') {
                 err += '-Please enter your email\n';
+                $("#txtEmailLogin").parent().after("<div class='validation' style='color:red;margin-bottom: 5px;'>Please enter your email</div>");
+                $("#txtEmailLogin").focus();
             }
-
             if (pass == '') {
                 err += '-Please enter your password\n';
+                $("#txtPassLogin").parent().after("<div class='validation' style='color:red;margin-bottom: 5px;'>Please enter your password</div>");
+                $("#txtPassLogin").focus();
             }
             if (err != '') {
-                alert(err);
+                console.log(err);
             }
             else {
                 //check login
@@ -317,10 +212,13 @@
                 }, function (data) {
                     if (data == 0) {
                         alert('Wrong username/password please try again.');
+                        $("#txtPassLogin").focus();
                     }
                     else {
-
-                        localStorage.token = data;
+                        _token = data.split('uid')[0];
+                        _user_id = data.split('uid')[1];
+                        localStorage.token = _token;
+                        localStorage.user_id = _user_id;
                         GoTo('page-post');
                         $("#menu").show();
 
@@ -335,24 +233,48 @@
             if (id == 'page-post') {
                 ViewPostList();
             }
+            if (id == 'page-post-details') {
+                clearInterval(inter_load_chat_sync);
+            }
 
             $("#" + id).show();
         }
 
-        function ChangeTab(id) {
-            $(".page").hide();
 
-            $(".menu-active").removeClass("menu-active");
-            $(".menu-item").eq(id - 1).addClass("menu-active");
-            if (id == 1)
-                $("#page-post").show();
-            else if (id == 2)
-                $("#page-messages").show();
-            else if (id == 3)
-                $("#page-create-post").show();
-            else if (id == 4)
-                $("#page-account").show();
+
+
+        function LoadMessenger() {
+            $.ajax({
+                dataType: "json",
+                data: {
+                    token: localStorage.token
+                },
+                url: BASE_API + 'chat/load-conversations.aspx',
+
+                success: function (data2) {
+                    //console.log(data2);
+                    pr_list = '';
+                    $.each(data2, function (key, val) {
+                        //console.log(key + " " + val.title);
+                        pr_list += '<div>';
+                        pr_list += '<div class="room-avatar" onclick="ViewPostDetailsFromChat('+val.post_id+')"><img class=" room-img rounded-circle" src="img/' + val.create_avatar+'"/></div>';
+                        pr_list += '<div class="room-block" onclick="OpenChat('+val.post_id+',' + val.conver_id + ',\'' + val.post_title + '\')"><div class="room-user-post">' + val.create_user_name + ' < ' + val.post_title + '</div>';
+                        if (val.last_user_id == localStorage.user_id) {
+                            pr_list += '<div class="room-last-chat">You: ' + val.last_user_mess + '</div>';
+                        }
+                        else {
+                            pr_list += '<div class="room-last-chat">' + val.last_user_name + ': ' + val.last_user_mess + '</div></div>';
+                        }
+                        pr_list += '<div style="clear:both"></div>';
+                        pr_list += '</div>';
+
+                    });
+                    $("#mess-block").html(pr_list);
+
+                }
+            });
         }
+
 
 
 
@@ -367,7 +289,7 @@
                     $.each(data2, function (key, val) {
                         //console.log(key + " " + val.title);
                         pr_list += '<div class="post-block" onclick="ViewPostDetails(' + val.post_id + ')">';
-                        pr_list += '<div class="post-img"><img src="/img/' + val.img + '" class="img-avt-circle rounded-circle" /></div>';
+                        pr_list += '<div class="post-img"><img src="/img/post/' + val.img + '" class="img-avt-circle rounded-circle" /></div>';
                         pr_list += '<div class="post-desc">';
                         pr_list += '<div class="post-title">' + val.title + '</div>';
                         pr_list += '<div class="post-short-desc">' + val.short_desc + '</div>';
@@ -395,7 +317,7 @@
         }
 
         function ViewPostDetails(post_id) {
-
+            $("#page-post-details").find(".ic-back").attr("onclick","GoTo('page-post')");
             $.ajax({
                 dataType: "json",
                 url: BASE_API + 'post/get-top-content.aspx?post_id=' + post_id,
@@ -403,10 +325,20 @@
 
                     $.each(data, function (key, val) {
 
-                        $("#post-details-img img").attr('src', "/img/" + val.img);
+                        $("#post-details-img img").attr('src', "/img/post/" + val.img);
                         $("#post-details-user").html('<i class="fas fa-user" style="margin-right:10px"></i>' + val.user_name);
                         $("#post-details-title").html(val.title);
                         $("#post-details-desc").html(val.post_content);
+
+
+
+                        if (val.user_id == localStorage.user_id) {
+                            $("#btn-Create-Conver").hide();
+                        }
+                        else {
+                            $("#btn-Create-Conver").attr("onclick", "CreateConver(" + post_id + ")");
+                            $("#btn-Create-Conver").show();
+                        }
 
                         GoTo('page-post-details');
 
@@ -416,6 +348,128 @@
                 }
             });
 
+        }
+
+        function ViewPostDetailsFromChat(post_id) {
+            ViewPostDetails(post_id);
+            $("#page-post-details").find(".ic-back").attr("onclick", "ChangeTab(2)");
+        }
+
+        function LoadMessSync(post_id, conver_id) {
+            $.ajax({
+                data: {
+                    token: localStorage.token,
+                    post_id: post_id,
+                    conver_id: conver_id
+                },
+                dataType: "json",
+                url: BASE_API + 'chat/load-conver.aspx',
+
+                success: function (data) {
+                    cs = "";
+                    start_time = '';
+                    $.each(data, function (key, val) {
+
+                        time = val.timespan;
+                        date = time.split(' ')[0];
+                        time = time.split(' ')[1] + ' ' + time.split(' ')[2];
+
+                        if (start_time != date) {
+                            start_time = date;
+                            cs += '<div class="chat-date">' + start_time + '</div>';
+                        }
+
+                        if (val.from_id == localStorage.user_id)
+                            cs += '<div class="chat-right">' + val.mess + '<div class="chat-time">' + time + '</div></div><div style="clear:both"></div>';
+                        else
+                            cs += '<div class="chat-left"><b>' + val.from_name + '</b>: ' + val.mess + '<div class="chat-time">' + time + '</div></div><div style="clear:both"></div>';
+
+                    });
+
+                    $("#conversation-show").html(cs);
+                    $('#conversation-show').scrollTop($('#conversation-show')[0].scrollHeight);
+                }
+            });
+        }
+
+        function LoadMessSync2(post_id, conver_id) {
+            $.ajax({
+                data: {
+                    token: localStorage.token,
+                    post_id: post_id,
+                    conver_id: conver_id
+                },
+                dataType: "json",
+                url: BASE_API + 'chat/load-conver.aspx',
+
+                success: function (data) {
+                    cs = "";
+                    start_time = '';
+                    $.each(data, function (key, val) {
+
+                        time = val.timespan;
+                        date = time.split(' ')[0];
+                        time = time.split(' ')[1] + ' ' + time.split(' ')[2];
+
+                        if (start_time != date) {
+                            start_time = date;
+                            cs += '<div class="chat-date">' + start_time + '</div>';
+                        }
+
+                        if (val.from_id == localStorage.user_id)
+                            cs += '<div class="chat-right">' + val.mess + '<div class="chat-time">' + time+'</div></div><div style="clear:both"></div>';
+                        else
+                            cs += '<div class="chat-left"><b>' + val.from_name + '</b>: ' + val.mess + '<div class="chat-time">' + time +'</div></div><div style="clear:both"></div>';
+
+                    });
+
+                    $("#conversation-show").html(cs);
+
+                }
+            });
+        }
+
+        function CreateConver(post_id) {
+
+            $("#room-title").html("@" + $("#post-details-title").html());
+            $("#conversation-show").html('');
+            LoadMessSync(post_id,0);
+            inter_load_chat_sync = setInterval(function () {
+                LoadMessSync2(post_id,0);
+            }, 5000);
+
+            /* $.post(BASE_API + "chat/load-conver.aspx", {
+                 token: localStorage.token,
+                 post_id:post_id
+             }, function (data) {
+                 if (data != 1 && data != 0) {
+                     // print chat list
+                     cs = "";
+                     $.each(data, function (key, val) {
+
+                         cs += '<div>' + val.mess + '</div>';
+
+                     });
+
+                     $("#conversation-show").html(cs);
+                 }
+             });*/
+
+            $("#btn-Chat-Send").attr("onclick", "SendChat(" + post_id + ")");
+            GoTo('page-conver');
+        }
+
+        function SendChat(post_id) {
+            var mess = $("#txtChat").val();
+
+            $.post(BASE_API + "chat/send.aspx", {
+                token: localStorage.token,
+                mess: mess,
+                post_id: post_id
+            }, function (data) {
+                $("#txtChat").val('');
+                LoadMessSync(post_id);
+            });
         }
 
 
@@ -430,11 +484,20 @@
         function Logout() {
             localStorage.clear();
             GoTo('page-login');
+            $("#menu").hide();
         }
 
 
 
         $(function () {
+            inter_load_mess = setInterval(function () {
+                console.log("loading...");
+            }, 10000);
+
+            inter_load_chat_sync = setInterval(function () {
+                console.log("chat sync init...");
+            }, 100000)
+
             GenerateYear();
             if (localStorage.token != null) {
                 GoTo('page-post');
@@ -445,83 +508,12 @@
             }
         });
 
-        /* create post */
-        var base64 = "";
-        function Preview(event) {
-            var input = event.target;
-            if (input.files) {
-                var reader = new FileReader();
-                reader.fileName = input.files[0].name;
-                reader.onload = function (e) {
-                    base64 = e.target.result.replace(/^data:image\/[a-z]+;base64,/, "");
-                    $("#preview").attr("src", e.target.result);
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
-        };
 
-
-        function CreatePost() {
-            var token = localStorage.token();
-            var fields = token.split('@@');
-            var checkEmail = fields[0];
-            var checkPass = fields[1];
-            $("#btnSave").attr("disabled", "disabled");
-            $(".validation").remove();
-            var title = $("#txtTitle").val();
-            var shortdes = $("#txtShortDes").val();
-            var contdes = $("#txtContDes").val();
-            alert(checkEmail);
-            if (title == '') {
-                alert("Please enter title.")
-                /* err += 'Please enter title.';*/
-                $("#txtTitle").parent().after("<div class='validation' style='color:red;margin-bottom: 5px;'>Please enter title</div>")
-
-                $("#btnSave").removeAttr("disabled");
-            }
-            if (shortdes == '') {
-                alert("Please enter short description.")
-            }
-            if (contdes == '') {
-                alert("Please enter content description.")
-            }
-            //if (err != '') {
-            //    $("#btnSave").removeAttr("disabled");
-            //}
-            else {
-
-                $.post(BASE_API + "post/create-post.aspx", {
-                    base64: base64,
-                    title: title,
-                    shortdes: shortdes,
-                    contdes: contdes,
-                    checkEmail: checkEmail,
-                    checkPass: checkPass
-
-                }, function (data) {
-                    if (data == 1) {
-                        $("#txtTitle").val('');
-                        $("#txtShortDes").val('');
-                        $("#txtContDes").val('');
-                        base64 = "";
-                        $("#btnSave").removeAttr("disabled");
-                        alert("Create Post Success.")
-                        GoTo('page-post');
-                        $("#menu").show();
-                    }
-                    else {
-                        alert("Please try again.")
-                        $("#btnSave").removeAttr("disabled");
-                    }
-
-                });
-
-            }
-
-
-        }
 
     </script>
+    <script src="js/post-man.js?v=1.0.3.1"></script>
+    <script src="js/chat-man.js?v=1.0.3.1"></script>
+    <script src="js/menu-nav.js?v=1.0.3.1"></script>
 </head>
 <body>
     <!---- Page Register ---->
@@ -549,11 +541,11 @@
             </div>
             <div>
                 <label></label>
-                <input type="text" class="form-control" id="txtName" placeholder="Your name" />
+                <input type="text" class="form-control" id="txtName" placeholder="Your name" onchange="Validate(1)" />
             </div>
             <div>
                 <label></label>
-                <select class="form-select" id="slCity">
+                <select class="form-select" id="slCity" onchange="Validate(2)">
                     <option value="0">Your City</option>
                     <option value="1">Drago</option>
                     <option value="2">Daxe</option>
@@ -561,17 +553,17 @@
             </div>
             <div>
                 <label></label>
-                <select class="form-select" id="slYear">
+                <select class="form-select" id="slYear" onchange="Validate(3)">
                     <option value="0">Your birth year</option>
                 </select>
             </div>
             <div>
                 <label></label>
-                <input type="text" class="form-control" id="txtEmail" placeholder="Your email (not visible to others)" />
+                <input type="text" class="form-control" id="txtEmail" placeholder="Your email (not visible to others)" onchange="Validate(4)" />
             </div>
             <div>
                 <label></label>
-                <input type="password" class="form-control" id="txtPass" placeholder="Password" />
+                <input type="password" class="form-control" id="txtPass" placeholder="Password" onchange="Validate(5)" />
             </div>
             <div>
                 <br />
@@ -605,10 +597,11 @@
 
         <div id="form-Login" class="col-xl-4 offset-xl-4 col-lg-6 offset-lg-3 col-8 offset-2" style="margin-top:10px">
             <div>
+                <label></label>
                 <input type="text" class="form-control" id="txtEmailLogin" placeholder="Email" />
             </div>
-            <div style="margin-top:5px">
-
+            <div style="margin-top:0px">
+                <label></label>
                 <input type="password" class="form-control" id="txtPassLogin" placeholder="Password" />
             </div>
             <div style="text-align:center;">
@@ -617,6 +610,11 @@
             </div>
         </div>
 
+
+        <div style="text-align:center;margin-top:30px">
+            Did you forget your password? <br />
+            <a class="btn-link" onclick="GoTo('page-forgetpass')">Reset password</a>
+        </div>
 
 
     </div>
@@ -659,7 +657,7 @@
                 Looking for new acquaintances where anything is possible ?? right from going for walks. in the city and drinking a beer, or just rocking a movie on NEtflix, write if it should be of interest?? is 36.
             </div>
             <div id="post-details-action" style="margin-top:10px;">
-                <button class="btn btn-secondary">
+                <button class="btn btn-secondary" id="btn-Create-Conver">
                     <div class="fas fa-comment" style="margin-top:5px;margin-right:10px;float:left"></div> <div style="margin-top:0px;float:left">Send Message</div>
                 </button>
             </div>
@@ -669,41 +667,186 @@
     <!--./ Page Post Details ---->
     <!---- Page Messages ---->
     <div class="page" id="page-messages" style="display:none">
-        <div class="ic-back">Page Messages</div>
+        <div class="ic-back">Messages</div>
+        <div id="mess-block">
+
+        </div>
     </div>
     <!--./ Page Messages ---->
-    <!---- Page create-post ---->
+    <!---- Page Create Post ---->
     <div class="page" id="page-create-post" style="display:none">
-        <div class="ic-back">Page Create Post</div>
-        <!-- Content area -->
-        <section class="content table-data">
 
-            <!-- /table -->
-        </section>
-        <!-- ./ content-->
-        <section class="content modal-form">
-            <form class="form-horizontal" id="formData">
-                <!--<div class="form-group">
-                    <button type="button" class="btnBack btn btn-primary pull-left">BACK</button>
-                </div>-->
+
+        <div class="menu-top-fix" style="margin-bottom:20px">
+            <div class="ic-back">Create Bubb</div>
+        </div>
+
+        <!-- create post form  -->
+        <div id="create-post-form-block" style="background-color:white;padding:10px" class="rounded border-light border col-xl-4 offset-xl-4 col-lg-6 offset-lg-3 col-12">
+
+            <div style="text-align:center" id="lblPostImg">
+                <img class="rounded-circle" id="post-photo" src="img/icon/ic-add-pic.png" style="max-width:100px" onclick="SelectPhoto()" />
+                <div style=" margin-top: -60px; font-size: 42px; position: relative; color: white; margin-left: 40px;" onclick="SelectPhoto()">+</div>
+                <div id="post-photo-close" style="display:none" onclick="RemovePostPhoto()">
+                    <i class="fa fa-times-circle"></i>
+                </div>
+            </div>
+
+            <section class="content modal-form">
                 <div class="form-group">
-                    <label class="col-md-2 col-sm-2 text-right">Title</label>
-                    <div class="col-md-10 col-sm-10">
+                    <label class="text-right">Title</label>
+                    <div>
                         <input type="text" class="form-control validate" id="txtTitle" placeholder="Enter title..." />
                     </div>
                 </div>
-                <br />
-                <div class="form-group">
-                    <label class="col-md-2 col-sm-2 text-right">Short Description</label>
-                    <div class="col-md-10 col-sm-10">
-                        <textarea class="form-control validate" rows="3" id="txtShortDes" data-message-val="Enter short description..." placeholder="Enter short descrtiption..."></textarea>
+
+                <div class="form-group" style="display:none">
+                    <label class="text-right">Short Description</label>
+                    <div>
+                        <textarea class="form-control validate" rows="2" id="txtShortDes" data-message-val="Enter short description..." placeholder="Enter short description..."></textarea>
                     </div>
                 </div>
                 <br />
                 <div class="form-group">
-                    <label class="col-md-2 col-sm-2 text-right">Content Description</label>
-                    <div class="col-md-10 col-sm-10">
-                        <textarea class="form-control validate" rows="3" id="txtContDes" data-message-val="Enter content description..." placeholder="Enter content description..."></textarea>
+                    <label class="text-right">Description</label>
+                    <div>
+                        <textarea class="form-control validate" rows="4" id="txtContDes" data-message-val="Enter content..." placeholder="Bubblr is a platform for finding new communities. What kind of communities/friendships are you looking for?"></textarea>
+                    </div>
+                </div>
+                <br />
+                <div class="form-group">
+                    <label class="text-right">Location (optional)</label>
+                    <div>
+                        <input type="text" class="form-control validate" id="txtLocation" />
+                    </div>
+                </div>
+
+                <div class="form-group" style="display:none">
+                    <label>Picture</label>
+                    <img src="" id="preview" /><br />
+                    <div class="fileUpload btn btn-default btn-upload">
+                        <span>+ Add Picture</span>
+                        <input id="filePhoto" type="file" onchange="Preview(event,this)" accept="image/*" class="upload" />
+                    </div>
+                </div>
+                <br />
+                <div class="form-group" style="text-align:center">
+                    <button style="width:40%" id="btnSave" type="submit" class="btn btn-primary pull-right" onclick="CreatePost()">Create post</button>
+
+                </div>
+            </section>
+
+
+        </div>
+
+
+
+
+
+
+    </div>
+    <!--./ Page Create Post ---->
+    <!---- Page Account ---->
+    <div class="page" id="page-account" style="display:none;">
+        <div class="ic-back menu-top-fix">
+            Page Account
+            <button class="btn btn-primary" onclick="Logout()" style="margin-left:20px;float:right">
+                Log out
+            </button>
+        </div>
+        <div style="clear:both"></div>
+        <div id="user-content-block" class="col-xl-6 offset-xl-3 col-lg-8 offset-lg-2 col-10 offset-1" style="margin-top:10px">
+            <div onclick="ListPostByUser()">My Posts</div>
+
+            <div id="post-list-by-user" style="margin-top:10px">
+
+            </div>
+
+        </div>
+
+    </div>
+    <!--./ Page Account ---->
+    <!---- Page ForgetPass ---->
+    <div class="page" id="page-forgetpass" style="display:none">
+        <div style="float:right">
+            <button class="btn btn-primary" style="margin:10px" onclick="GoTo('page-login')">Login</button>
+        </div>
+        <div style="clear:both"></div>
+        <div class="logo-header">Reset Password.</div>
+        <div class="text-desc">
+            Please enter your email. We will send you the reset-pass via email. <br />
+
+        </div>
+        <div class="col-xl-4 offset-xl-4 col-lg-6 offset-lg-3 col-8 offset-2" id="form-resetpass" style="margin-top:10px">
+            <input type="text" class="form-control" id="txtResetEmail" placeholder="Email" />
+
+            <div style="text-align:center;">
+                <br />
+                <button class="btn btn-primary" style="width:100%" onclick="SendResetPass()">Send Me The ResetPass Link</button>
+            </div>
+
+        </div>
+
+    </div>
+    <!--./ Page ForgetPass ---->
+    <!---- Page My Post Details ---->
+    <div id="page-my-post-details" class="page" style="display:none">
+
+        <div class="menu-top-fix">
+            <div class="ic-back" onclick="GoTo('page-account')"><i class="fa fa-angle-left btn-back"></i> My posts</div>
+        </div>
+
+        <!-- post details content  -->
+        <div id="my-post-details-content-block" style="background-color:white;text-align:center;padding:20px" class="rounded border-light border col-xl-4 offset-xl-4 col-lg-6 offset-lg-3 col-12">
+            <div id="my-post-details-img">
+                <img src="/img/pic-4.jpg" class="rounded-circle" />
+            </div>
+            <div id="my-post-details-user">
+                <i class="fas fa-user" style="margin-right:10px"></i> MG K
+            </div>
+            <div id="my-post-details-title">
+                Friends are wanted
+            </div>
+            <div id="my-post-details-desc">
+                Looking for new acquaintances where anything is possible ?? right from going for walks. in the city and drinking a beer, or just rocking a movie on NEtflix, write if it should be of interest?? is 36.
+            </div>
+            <div id="my-post-details-action" style="margin-top:10px;">
+
+            </div>
+        </div>
+
+    </div>
+    <!--./ Page My Post Details ---->
+    <!-- Page Edit Post -->
+    <div class="page" id="page-edit-post" style="display:none">
+
+
+        <div class="menu-top-fix">
+            <div class="ic-back" onclick="GoTo('page-account')"><i class="fa fa-angle-left btn-back"></i> Edit Bubb</div>
+        </div>
+
+        <!-- create post form  -->
+        <div id="edit-post-form-block" style="background-color:white;padding:10px" class="rounded border-light border col-xl-4 offset-xl-4 col-lg-6 offset-lg-3 col-12">
+
+            <section class="content modal-form">
+                <div class="form-group">
+                    <label class="text-right">Title</label>
+                    <div>
+                        <input type="text" class="form-control validate" id="txtEditTitle" placeholder="Enter title..." />
+                    </div>
+                </div>
+                <br />
+                <div class="form-group">
+                    <label class="text-right">Short Description</label>
+                    <div>
+                        <textarea class="form-control validate" rows="2" id="txtEditShortDes" data-message-val="Enter short description..." placeholder="Enter short description..."></textarea>
+                    </div>
+                </div>
+                <br />
+                <div class="form-group">
+                    <label class="text-right">Content Description</label>
+                    <div>
+                        <textarea class="form-control validate" rows="4" id="txtEditContDes" data-message-val="Enter content..." placeholder="Enter content..."></textarea>
                     </div>
                 </div>
                 <br />
@@ -717,23 +860,52 @@
                 </div>
                 <br />
                 <div class="form-group">
-                    <button id="btnSave" type="submit" class="btn btn-success pull-right" onclick="CreatePost()">SAVE</button>
-                    <button type="button" class="btnBack btn btn-primary pull-left">BACK</button>
+                    <button style="width:100%" id="btnUpdate" type="submit" class="btn btn-primary pull-right" onclick="UpdatePost()">Update</button>
+
                 </div>
-            </form>
-        </section>
+            </section>
+
+
+        </div>
+
+
+
+
+
 
     </div>
-    <!--./ Page Account ---->
-    <!---- Page Account ---->
-    <div class="page" id="page-account" style="display:none;">
-        <div class="ic-back">Page Account</div>
+    <!-- ./ Page Edit Post -->
 
-        <button class="btn btn-primary" onclick="Logout()" style="margin-left:20px">
-            Log out
-        </button>
+    <!-- Page Conver -->
+    <div id="page-conver" class="page" style="display:none">
+
+
+        <div class="menu-top-fix">
+            <div class="ic-back" onclick="GoTo('page-post-details')"><i class="fa fa-angle-left btn-back"></i> <span id="room-title"></span></div>
+        </div>
+
+        <!-- post details content  -->
+        <div id="my-post-details-content-block" style="background-color:white;text-align:center;" class="rounded border-light border col-xl-4 offset-xl-4 col-lg-6 offset-lg-3 col-12">
+            <div id="conversation-show" style="max-height: 400px; height: 400px; overflow-y: scroll;"></div>
+
+            <div style="bottom:0;position:fixed;margin-bottom:70px;left:0" class="col-xl-4 offset-xl-4 col-lg-6 offset-lg-3 col-12">
+                <div class="row" style="padding:10px">
+                    <div class="col-11"> <input type="text" class="form-control" id="txtChat" /></div>
+                    <div class="col-1" style="padding-left:0px !important">       <i class="fa fa-2x fa-paper-plane" style="cursor:pointer" id="btn-Chat-Send" ></i></div>
+                </div>
+                
+            </div>
+          
+
+            <div style="clear:both">
+
+            </div>
+
+        </div>
+
     </div>
-    <!--./ Page Account ---->
+    <!--./ Page Conver -->
+
     <!-- GLOBAL :: header -->
     <!-- GLOBAL:: bottom menu -->
     <div class="row" id="menu" style="display:none">

@@ -1,0 +1,1 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="load-message-v2.aspx.cs" Inherits="api_chat_load_message_v2" %>

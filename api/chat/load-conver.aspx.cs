@@ -12,7 +12,7 @@ public partial class api_chat_load_conver : System.Web.UI.Page
     {
         string token = Request["token"];
         int conver_id = Convert.ToInt32(Request["conver_id"]);
-
+        int post_id = Convert.ToInt32(Request["post_id"]);
 
         UserManager UM = new UserManager();
         user u = UM.CheckToken(token);

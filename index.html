@@ -3,14 +3,18 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-    <title>BUBBLR v1.0.3</title>
+    <title>BUBBLR v1.0.4</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 
 
-    <link href="css/style.css?v=1.0.3.1" rel="stylesheet" />
+    <link href="css/style.css?v=1.0.4.1" rel="stylesheet" />
+
+    <!-- chat -->
+    <script src="https://signalr.targetvn.com/js/signalr/dist/browser/signalr.js"></script>
+    <script src="js/signal-chat.js?v=1.0.4"></script>
 
     <script>
         BASE_API = "/api/";
@@ -234,6 +238,7 @@
                 ViewPostList();
             }
             if (id == 'page-post-details') {
+                localStorage.page = 1;
                 clearInterval(inter_load_chat_sync);
             }
 
@@ -257,8 +262,8 @@
                     $.each(data2, function (key, val) {
                         //console.log(key + " " + val.title);
                         pr_list += '<div>';
-                        pr_list += '<div class="room-avatar" onclick="ViewPostDetailsFromChat('+val.post_id+')"><img class=" room-img rounded-circle" src="img/' + val.create_avatar+'"/></div>';
-                        pr_list += '<div class="room-block" onclick="OpenChat('+val.post_id+',' + val.conver_id + ',\'' + val.post_title + '\')"><div class="room-user-post">' + val.create_user_name + ' < ' + val.post_title + '</div>';
+                        pr_list += '<div class="room-avatar" onclick="ViewPostDetailsFromChat(' + val.post_id + ')"><img class=" room-img rounded-circle" src="img/' + val.create_avatar + '"/></div>';
+                        pr_list += '<div class="room-block" onclick="OpenConversation(' + val.post_id + ',' + val.conver_id + ',\'' + val.post_title + '\')"><div class="room-user-post">' + val.create_user_name + ' < ' + val.post_title + '</div>';
                         if (val.last_user_id == localStorage.user_id) {
                             pr_list += '<div class="room-last-chat">You: ' + val.last_user_mess + '</div>';
                         }
@@ -317,7 +322,7 @@
         }
 
         function ViewPostDetails(post_id) {
-            $("#page-post-details").find(".ic-back").attr("onclick","GoTo('page-post')");
+            $("#page-post-details").find(".ic-back").attr("onclick", "GoTo('page-post')");
             $.ajax({
                 dataType: "json",
                 url: BASE_API + 'post/get-top-content.aspx?post_id=' + post_id,
@@ -336,7 +341,7 @@
                             $("#btn-Create-Conver").hide();
                         }
                         else {
-                            $("#btn-Create-Conver").attr("onclick", "CreateConver(" + post_id + ")");
+                            $("#btn-Create-Conver").attr("onclick", "OpenChat_V2(" + post_id + ")");
                             $("#btn-Create-Conver").show();
                         }
 
@@ -417,9 +422,9 @@
                         }
 
                         if (val.from_id == localStorage.user_id)
-                            cs += '<div class="chat-right">' + val.mess + '<div class="chat-time">' + time+'</div></div><div style="clear:both"></div>';
+                            cs += '<div class="chat-right">' + val.mess + '<div class="chat-time">' + time + '</div></div><div style="clear:both"></div>';
                         else
-                            cs += '<div class="chat-left"><b>' + val.from_name + '</b>: ' + val.mess + '<div class="chat-time">' + time +'</div></div><div style="clear:both"></div>';
+                            cs += '<div class="chat-left"><b>' + val.from_name + '</b>: ' + val.mess + '<div class="chat-time">' + time + '</div></div><div style="clear:both"></div>';
 
                     });
 
@@ -433,44 +438,17 @@
 
             $("#room-title").html("@" + $("#post-details-title").html());
             $("#conversation-show").html('');
-            LoadMessSync(post_id,0);
-            inter_load_chat_sync = setInterval(function () {
+            LoadMessSync(post_id, 0);
+            /*inter_load_chat_sync = setInterval(function () {
                 LoadMessSync2(post_id,0);
-            }, 5000);
+            }, 5000);*/
 
-            /* $.post(BASE_API + "chat/load-conver.aspx", {
-                 token: localStorage.token,
-                 post_id:post_id
-             }, function (data) {
-                 if (data != 1 && data != 0) {
-                     // print chat list
-                     cs = "";
-                     $.each(data, function (key, val) {
-
-                         cs += '<div>' + val.mess + '</div>';
-
-                     });
-
-                     $("#conversation-show").html(cs);
-                 }
-             });*/
 
             $("#btn-Chat-Send").attr("onclick", "SendChat(" + post_id + ")");
             GoTo('page-conver');
         }
 
-        function SendChat(post_id) {
-            var mess = $("#txtChat").val();
 
-            $.post(BASE_API + "chat/send.aspx", {
-                token: localStorage.token,
-                mess: mess,
-                post_id: post_id
-            }, function (data) {
-                $("#txtChat").val('');
-                LoadMessSync(post_id);
-            });
-        }
 
 
         function GenerateYear() {
@@ -511,11 +489,11 @@
 
 
     </script>
-    <script src="js/post-man.js?v=1.0.3.1"></script>
-    <script src="js/chat-man.js?v=1.0.3.1"></script>
-    <script src="js/menu-nav.js?v=1.0.3.1"></script>
+    <script src="js/post-man.js?v=1.0.4.1"></script>
+    <script src="js/chat-man.js?v=1.0.4.1"></script>
+    <script src="js/menu-nav.js?v=1.0.4.1"></script>
 </head>
-<body>
+<body style="display:none">
     <!---- Page Register ---->
     <div id="page-register" class="page">
 

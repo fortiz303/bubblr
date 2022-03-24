@@ -22,14 +22,20 @@ public class ChatManager
 		Save();
     }
 
+	public conversation GetByPostId(int post_id, int from_id)
+    {
+		return db.conversations.Where(t => t.PostId == post_id && t.Created_UserId == from_id && t.Status != -1).FirstOrDefault();
+    }
+
 	public conversation GetConverByPostIdAndUserId(int post_id, int user_id)
     {
-		return db.conversations.Where(t => (t.PostId == post_id && t.Created_UserId == user_id) || ( t.PostId == post_id &&t.post.UserId == user_id )  ).FirstOrDefault();
-    }
+		return db.conversations.Where(t => (t.PostId == post_id && t.Created_UserId == user_id) || ( t.PostId == post_id &&t.post.UserId == user_id ) && t.Status != -1).FirstOrDefault();
+		//return db.conversations.Where(t => t.PostId == post_id && t.Created_UserId == user_id ).FirstOrDefault();
+	}
 
 	public List<conversation> GetConverRelated(int user_id)
     {
-		return db.conversations.Where(t => t.post.UserId == user_id || t.Created_UserId == user_id).ToList();
+		return db.conversations.Where(t => (t.post.UserId == user_id || t.Created_UserId == user_id) && t.Status != -1).ToList();
     }
 
 	public void AddMess(mess mess)
@@ -40,7 +46,7 @@ public class ChatManager
 
 	public List<mess> GetConversation(int conve_id)
     {
-		return db.messes.Where(t => t.ConverId == conve_id).ToList();
+		return db.messes.Where(t => t.ConverId == conve_id && t.Status != -1).ToList();
     }
 
 

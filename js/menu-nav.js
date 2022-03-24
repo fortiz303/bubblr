@@ -1,6 +1,7 @@
 ﻿/// BOTTOM MENU CHANGE TAB
+localStorage.page = 0;
 function ChangeTab(id) {
-
+    localStorage.page = id;
     clearInterval(inter_load_mess);
     clearInterval(inter_load_chat_sync);
 
@@ -16,7 +17,7 @@ function ChangeTab(id) {
 
         if (localStorage.nav_stack_chat!= null && localStorage.nav_stack_chat != 0) {
             // open the current chat
-            OpenChat(localStorage.nav_stack_chat, localStorage.nav_stack_post_title);
+            OpenConversation(localStorage.nav_stack_post_id, localStorage.nav_stack_chat, localStorage.nav_stack_post_title);
         }
         else {
             //load list of chat history room

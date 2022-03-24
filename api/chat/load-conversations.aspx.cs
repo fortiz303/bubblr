@@ -17,6 +17,8 @@ public partial class api_chat_load_conversations : System.Web.UI.Page
         if(u!=null)
         {
             ChatManager CM = new ChatManager();
+
+            // get list conversation by userid
             List<conversation> list_conver = CM.GetConverRelated(u.Id).OrderByDescending(t=>t.LastUpdate).ToList();
 
             

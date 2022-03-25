@@ -1,28 +1,9 @@
-﻿function JoinGroup(conver_id) {
-    try {
-        console.log("Start Joining Group " + conver_id);
-        connection.invoke("JoinGroup", conver_id);
-        console.log("Joined!! ===> " + conver_id);
-    } catch (err) {
-        console.error(err);
-        // Re Join...
-        JoinGroup(conver_id);
-    }
-}
-
-function SendSignalChat(conver_id) {
-    console.log("sending chat...");
-    connection.invoke("SendSignalChat", ""+conver_id).catch(function (err) {
-        return console.error(err.toString());
-    });
-}
-
-
-
-
+﻿
 //HUB_URL = "https://localhost:44319/"; // debug
 HUB_URL = "https://signalr.targetvn.com/"; // product
 connection = new signalR.HubConnectionBuilder().withUrl(HUB_URL + "chatHub").build();
+
+
 
 connection.on("ReceiveSignalChat", function (conver_id) {
     console.log("ReceiveSignalChat..." + conver_id);
@@ -54,6 +35,27 @@ connection.onclose(() => {
         return console.error(err.toString());
     });
 });
+
+function JoinGroup(conver_id) {
+    try {
+        console.log("Start Joining Group " + conver_id);
+        connection.invoke("JoinGroup", ""+conver_id);
+        console.log("Joined!! ===> " + conver_id);
+    } catch (err) {
+        alert(err.toString());
+        console.error(err);
+        // Re Join...
+        console.log("Re joininig Group...");
+        JoinGroup(conver_id);
+    }
+}
+
+function SendSignalChat(conver_id) {
+    console.log("sending chat...");
+    connection.invoke("SendSignalChat", "" + conver_id).catch(function (err) {
+        return console.error(err.toString());
+    });
+}
 
 $(function () {
 

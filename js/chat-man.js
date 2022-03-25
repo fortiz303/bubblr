@@ -65,6 +65,7 @@ function OpenChat_V2(post_id) {
                 }
                 else {
                     if (flag_JoinGroup == 0) {
+                        console.log("Trying to Join group");
                         flag_JoinGroup = 1;
                         $.post(BASE_API + "chat/get-converId.aspx", {
                             token: token,

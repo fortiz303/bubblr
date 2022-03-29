@@ -23,18 +23,27 @@ connection.on("ReceiveSignalChat", function (conver_id) {
     console.log(token + " " + message + " " + post_id);
 });*/
 connection.onclose(() => {
-    alert("Connection Close");
+
+    $("#panel-disconnect").show();
     console.log("Connection closed");
-    $("body").hide();
-    //re connect
+    inter_re_connect = setInterval(function () {
+        console.log("re connect loading...");
+        KeepCheckConnect();
+    }, 3000);
+    
+});
+
+function KeepCheckConnect() {
+
     connection.start().then(function () {
         console.log("Connection Start....");
-        $("body").fadeIn();
+        $("#panel-disconnect").hide();
+        clearInterval(inter_re_connect);
     }).catch(function (err) {
-        $("body").fadeIn();
+        $("#panel-disconnect").show();
         return console.error(err.toString());
     });
-});
+}
 
 function JoinGroup(conver_id) {
     try {

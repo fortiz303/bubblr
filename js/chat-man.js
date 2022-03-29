@@ -43,6 +43,10 @@ function OpenChat_V2(post_id) {
     $("#btn-Chat-Send").attr("disabled","disabled");
     GoTo('page-conver');
 
+    _h = $(window).height() - 170;
+
+    $("#conversation-show").css({ "height": _h + "px", "max-height": _h + "px" });
+
     flag_JoinGroup = 0;
 
     $.ajax({

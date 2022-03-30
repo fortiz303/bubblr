@@ -15,7 +15,7 @@ function ChangeTab(id) {
     }
     else if (id == 2) {
 
-        if (localStorage.nav_stack_chat!= null && localStorage.nav_stack_chat != 0) {
+        if (localStorage.nav_stack_chat != null && localStorage.nav_stack_chat != 0) {
             // open the current chat
             OpenConversation(localStorage.nav_stack_post_id, localStorage.nav_stack_chat, localStorage.nav_stack_post_title);
         }
@@ -28,8 +28,10 @@ function ChangeTab(id) {
             $("#page-messages").show();
         }
     }
-    else if (id == 3)
+    else if (id == 3) {
+        RemovePostPhoto();
         $("#page-create-post").show();
+    }
     else if (id == 4) {
         ListPostByUser();
         $("#page-account").show();

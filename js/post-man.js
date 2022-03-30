@@ -23,6 +23,10 @@ function Preview(event) {
 
 /// CREATE NEW POST
 function CreatePost() {
+
+    //
+    $("#btnSave").html('<i id="create-post-wait" class="fas fa-spinner fa-spin"></i> Create Post');
+
     var token = localStorage.token;
     $("#btnSave").attr("disabled", "disabled");
     $(".validation").remove();
@@ -58,6 +62,7 @@ function CreatePost() {
     if (err != '') {
         /* alert("Please enter title.");*/
         $("#btnSave").removeAttr("disabled");
+        $("#create-post-wait").remove();
     }
     else {
 
@@ -77,14 +82,22 @@ function CreatePost() {
                 $("#txtLocation").val('');
                 base64 = "";
                 $("#btnSave").removeAttr("disabled");
-                alert("New post Created!")
+                RemovePostPhoto();
+                //alert("New post Created!");
                 //GoTo('page-post');
-                ChangeTab(1);
-                $("#menu").show();
+
+                alertify.alert("Created A New Post", function () {
+                    ChangeTab(1);
+                    $("#menu").show();
+                    $("#create-post-wait").remove();
+                }).set({ title: "Information" });
+
+               
             }
             else {
                 alert("Please try again.")
                 $("#btnSave").removeAttr("disabled");
+                $("#create-post-wait").remove();
             }
 
         });
